@@ -1,0 +1,371 @@
+{
+    "took": 31,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": {
+            "value": 10000,
+            "relation": "gte"
+        },
+        "max_score": 16.86803,
+        "hits": [
+            {
+                "_index": "allure",
+                "_id": "mGmlspQBh571mEWWnbBC",
+                "_score": 16.86803,
+                "_source": {
+                    "name": "@1.6 - email inline__outgoing_dlp",
+                    "uid": "5bd54f5e04e1f8eb",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738163657109,
+                        "stop": 1738163973658,
+                        "duration": 316549
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"body\": \"clean\", \"attachments\": [{\"dlp\":{\"pii,pci\":\"pdf\"}}], \"sender\":{\"user\":\"inline\", \"provider\":\"microsoft\", \"workflow\": \"quarantine\"}, \"recipients\": {\"to\": [{\"mode\": \"inline\", \"address\":\"automation_inline1@xqf44.onmicrosoft.com\",\"provider\": \"microsoft\", \"workflow\":\"None\"}]}}]",
+                        "inline__outgoing_dlp"
+                    ],
+                    "tags": [
+                        "TESTSET_AUT-1792",
+                        "TEST_AUT-1104",
+                        "auto_tests"
+                    ],
+                    "properties": {
+                        "farm": "mt-qa-1",
+                        "cluster": "4",
+                        "ticket": "AUT-1104",
+                        "tag": "mt-qa-1_c4_AUT-1104_1738163342"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "GUGlspQB2gzz_sNsnBKi",
+                "_score": 16.860264,
+                "_source": {
+                    "name": "@1.2 - email inline_malware",
+                    "uid": "50d1336bf6564785",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1738163348772,
+                        "stop": 1738163655690,
+                        "duration": 306918
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{ \"body\": \"clean\", \"attachments\": [{\"malware\":{\"dummy\":\"pdf\"}}], \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\", \"workflow\": \"quarantine\"}]}}]",
+                        "inline_malware"
+                    ],
+                    "tags": [
+                        "TESTSET_AUT-1792",
+                        "TEST_AUT-1104",
+                        "auto_tests"
+                    ],
+                    "properties": {
+                        "farm": "mt-qa-1",
+                        "cluster": "4",
+                        "ticket": "AUT-1104",
+                        "tag": "mt-qa-1_c4_AUT-1104_1738163342"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "GkGlspQB2gzz_sNsnBLG",
+                "_score": 16.308496,
+                "_source": {
+                    "name": "@1.1 - email inline_clean",
+                    "uid": "45bc15a439ae0535",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1738163348780,
+                        "stop": 1738163654067,
+                        "duration": 305287
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}]",
+                        "inline_clean"
+                    ],
+                    "tags": [
+                        "TESTSET_AUT-1792",
+                        "TEST_AUT-1104",
+                        "auto_tests"
+                    ],
+                    "properties": {
+                        "farm": "mt-qa-1",
+                        "cluster": "4",
+                        "ticket": "AUT-1104",
+                        "tag": "mt-qa-1_c4_AUT-1104_1738163342"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "l2mlspQBh571mEWWnbAd",
+                "_score": 16.308496,
+                "_source": {
+                    "name": "@1.3 - email inline_phishing",
+                    "uid": "f29ffe386f34dc47",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1738163349216,
+                        "stop": 1738163654976,
+                        "duration": 305760
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"body\": \"clean\", \"attachments\": [{\"phishing\":{\"dummy\":\"pdf\"}}], \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\", \"workflow\": \"alert\"}]}}]",
+                        "inline_phishing"
+                    ],
+                    "tags": [
+                        "TESTSET_AUT-1792",
+                        "TEST_AUT-1104",
+                        "auto_tests"
+                    ],
+                    "properties": {
+                        "farm": "mt-qa-1",
+                        "cluster": "4",
+                        "ticket": "AUT-1104",
+                        "tag": "mt-qa-1_c4_AUT-1104_1738163342"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "lmmlspQBh571mEWWnLB2",
+                "_score": 15.966002,
+                "_source": {
+                    "name": "@1.4 - email dnp_malware",
+                    "uid": "eccaf63f695ca341",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1738163348767,
+                        "stop": 1738163665638,
+                        "duration": 316871
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"body\": \"clean\", \"attachments\": [{\"malware\":{\"dummy\":\"pdf\"}}], \"recipients\": {\"to\": [{\"mode\": \"dnp\", \"provider\": \"microsoft\", \"workflow\": \"quarantine\"}]}}]",
+                        "dnp_malware"
+                    ],
+                    "tags": [
+                        "TESTSET_AUT-1792",
+                        "TEST_AUT-1104",
+                        "auto_tests"
+                    ],
+                    "properties": {
+                        "farm": "mt-qa-1",
+                        "cluster": "4",
+                        "ticket": "AUT-1104",
+                        "tag": "mt-qa-1_c4_AUT-1104_1738163342"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "NJClspQBld2VDfr4nMvz",
+                "_score": 15.966002,
+                "_source": {
+                    "name": "@1.5 - email dnp_phishing",
+                    "uid": "a9a29a53e624868b",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1738163348997,
+                        "stop": 1738163664212,
+                        "duration": 315215
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"body\": \"clean\", \"attachments\": [{\"phishing\":{\"dummy\":\"word\"}}], \"recipients\": {\"to\": [{\"mode\": \"dnp\", \"provider\": \"microsoft\", \"workflow\": \"alert\"}]}}]",
+                        "dnp_phishing"
+                    ],
+                    "tags": [
+                        "TESTSET_AUT-1792",
+                        "TEST_AUT-1104",
+                        "auto_tests"
+                    ],
+                    "properties": {
+                        "farm": "mt-qa-1",
+                        "cluster": "4",
+                        "ticket": "AUT-1104",
+                        "tag": "mt-qa-1_c4_AUT-1104_1738163342"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "NZClspQBld2VDfr4ncto",
+                "_score": 15.966002,
+                "_source": {
+                    "name": "@1.7 - email inline__outgoing_clean",
+                    "uid": "d3278411b6442e7c",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1738163658768,
+                        "stop": 1738163970212,
+                        "duration": 311444
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"body\": \"clean\", \"attachments\": [{\"clean\":{\"clean\":\"word\"}}], \"sender\":{\"user\":\"inline\", \"provider\":\"microsoft\", \"workflow\":\"None\"}, \"recipients\": {\"to\": [{\"mode\": \"inline\", \"address\":\"automation_dnp1@2xkvr3.onmicrosoft.com\",\"provider\": \"microsoft\"}]}}]",
+                        "inline__outgoing_clean"
+                    ],
+                    "tags": [
+                        "TESTSET_AUT-1792",
+                        "TEST_AUT-1104",
+                        "auto_tests"
+                    ],
+                    "properties": {
+                        "farm": "mt-qa-1",
+                        "cluster": "4",
+                        "ticket": "AUT-1104",
+                        "tag": "mt-qa-1_c4_AUT-1104_1738163342"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "3TYjgJEB2gzz_sNsgvJM",
+                "_score": 3.7006302,
+                "_source": {
+                    "name": "BDD POC - Xray test UI -- @1.3 ",
+                    "uid": "af4a71e2c62e9cf4",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1724431683120,
+                        "stop": 1724431683834,
+                        "duration": 714
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "Microsoft"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1001"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1001_1724431673"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "PoYjgJEBld2VDfr4g60C",
+                "_score": 3.7006302,
+                "_source": {
+                    "name": "Inline User Send an Email to Monitor User -- @1.1 single email parameter with multiple recipients and attachments",
+                    "uid": "dc6715d463e9ae14",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1724431686207,
+                        "stop": 1724431687014,
+                        "duration": 807
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"label\": \"inline\", \"body\": \"clean\", \"attachments\": [{\"malware\":{\"dummy\":\"word\"}}], \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\", \"policy_expectation\": \"Quarantined\"}]}}]"
+                    ],
+                    "tags": [
+                        "yahav"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1001_1724431673"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "4DYjgJEB2gzz_sNsg_LK",
+                "_score": 3.7006302,
+                "_source": {
+                    "name": "Login with Different Methods -- @1.3 ",
+                    "uid": "8b6f79b871a3d9a0",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1724431688268,
+                        "stop": 1724431688775,
+                        "duration": 507
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "Microsoft"
+                    ],
+                    "tags": [
+                        "tadela"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1001_1724431673"
+                    }
+                }
+            }
+        ]
+    }
+}

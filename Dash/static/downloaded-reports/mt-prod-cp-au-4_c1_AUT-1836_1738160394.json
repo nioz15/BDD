@@ -1,0 +1,383 @@
+{
+    "took": 15,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": {
+            "value": 10000,
+            "relation": "gte"
+        },
+        "max_score": 20.570076,
+        "hits": [
+            {
+                "_index": "allure",
+                "_id": "9JB_spQBld2VDfr4h8nx",
+                "_score": 20.570076,
+                "_source": {
+                    "name": "@1.2 - email WD s3_clean",
+                    "uid": "6401e5bdc9f18999",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738160398360,
+                        "stop": 1738161481558,
+                        "duration": 1083198
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}",
+                        "s3_clean",
+                        "s3"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1836"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-cp-au-4",
+                        "cluster": "1",
+                        "ticket": "AUT-1836",
+                        "tag": "mt-prod-cp-au-4_c1_AUT-1836_1738160394"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "9ZB_spQBld2VDfr4iMlm",
+                "_score": 20.544565,
+                "_source": {
+                    "name": "@1.3 - email WD s3_dlp_clean",
+                    "uid": "46bc5ccb008439a9",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738160398403,
+                        "stop": 1738161482643,
+                        "duration": 1084240
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"attachments\": [{\"clean\":{\"clean\":\"word\"}}], \"sender\":{\"user\":\"inline\", \"provider\":\"microsoft\", \"workflow\": \"None\"}, \"recipients\": {\"to\": [{\"mode\": \"inline\", \"address\":\"user2@avananlab70.onmicrosoft.com\",\"provider\": \"microsoft\"}]}}",
+                        "s3_dlp_clean",
+                        "s3_dlp"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1836"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-cp-au-4",
+                        "cluster": "1",
+                        "ticket": "AUT-1836",
+                        "tag": "mt-prod-cp-au-4_c1_AUT-1836_1738160394"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "70F_spQB2gzz_sNsiBAo",
+                "_score": 20.534422,
+                "_source": {
+                    "name": "@1.1 - email WD dl_lambda_clean",
+                    "uid": "883b47f3c34ae6dc",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738160398385,
+                        "stop": 1738160897621,
+                        "duration": 499236
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}",
+                        "dl_lambda_clean",
+                        "dl_lambda"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1836"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-cp-au-4",
+                        "cluster": "1",
+                        "ticket": "AUT-1836",
+                        "tag": "mt-prod-cp-au-4_c1_AUT-1836_1738160394"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "1z4ZJZQB2gzz_sNsmFWb",
+                "_score": 9.530696,
+                "_source": {
+                    "name": "Production Test - Login",
+                    "uid": "1959af27653464b9",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1735788908814,
+                        "stop": 1735788992153,
+                        "duration": 83339
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [],
+                    "tags": [
+                        "TEST_AUT-2057",
+                        "UI",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-cp-au-4",
+                        "cluster": "1",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-cp-au-4_c1_AUT-1723_1735788903"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "I2Y1JZQBh571mEWWj_c4",
+                "_score": 9.530696,
+                "_source": {
+                    "name": "@1.1 - Manual Quarantine & Restore",
+                    "uid": "c0f3c5de4adfbb07",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1735790736047,
+                        "stop": 1735790836698,
+                        "duration": 100651
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"label\": \"inline_clean\", \"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}]"
+                    ],
+                    "tags": [
+                        "TESTSET_AUT-1792",
+                        "Automated",
+                        "UI",
+                        "auto_tests",
+                        "manual_actions",
+                        "TEST_AUT-1367",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-cp-au-4",
+                        "cluster": "1",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-cp-au-4_c1_AUT-1723_1735790729"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "JWY1JZQBh571mEWWj_fg",
+                "_score": 9.530696,
+                "_source": {
+                    "name": "@1.2 - EUP login - password",
+                    "uid": "6ff3c4331c684329",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1735790785589,
+                        "stop": 1735790807679,
+                        "duration": 22090
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "password",
+                        "microsoft",
+                        "inline"
+                    ],
+                    "tags": [
+                        "TEST_AUT-2058",
+                        "UI",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-cp-au-4",
+                        "cluster": "1",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-cp-au-4_c1_AUT-1723_1735790729"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "iGZQJZQBh571mEWW6Pfo",
+                "_score": 9.530696,
+                "_source": {
+                    "name": "Production Test - Login",
+                    "uid": "ba9b98d841b37972",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1735792532440,
+                        "stop": 1735792614631,
+                        "duration": 82191
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [],
+                    "tags": [
+                        "TEST_AUT-2057",
+                        "UI",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-cp-au-4",
+                        "cluster": "1",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-cp-au-4_c1_AUT-1723_1735792526"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "y45QJZQBld2VDfr46Q-7",
+                "_score": 9.530696,
+                "_source": {
+                    "name": "@1.2 - EUP login - password",
+                    "uid": "4a9229d4672a8b8b",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1735792581993,
+                        "stop": 1735792604207,
+                        "duration": 22214
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "password",
+                        "microsoft",
+                        "inline"
+                    ],
+                    "tags": [
+                        "TEST_AUT-2058",
+                        "UI",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-cp-au-4",
+                        "cluster": "1",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-cp-au-4_c1_AUT-1723_1735792526"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "qmZZJZQBh571mEWW6vfA",
+                "_score": 9.530696,
+                "_source": {
+                    "name": "Production Test - Login",
+                    "uid": "c6527dc9d0d77b4b",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1735793122131,
+                        "stop": 1735793204679,
+                        "duration": 82548
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [],
+                    "tags": [
+                        "TEST_AUT-2057",
+                        "UI",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-cp-au-4",
+                        "cluster": "1",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-cp-au-4_c1_AUT-1723_1735793115"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "q2ZZJZQBh571mEWW6_cy",
+                "_score": 9.530696,
+                "_source": {
+                    "name": "@1.2 - EUP login - password",
+                    "uid": "c3ee2a0f9431b281",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1735793173158,
+                        "stop": 1735793182648,
+                        "duration": 9490
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "password",
+                        "microsoft",
+                        "inline"
+                    ],
+                    "tags": [
+                        "TEST_AUT-2058",
+                        "UI",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-cp-au-4",
+                        "cluster": "1",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-cp-au-4_c1_AUT-1723_1735793115"
+                    }
+                }
+            }
+        ]
+    }
+}

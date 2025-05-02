@@ -1,0 +1,29 @@
+Running xray_extractor_v2.sh...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--     0100  5421  100  5421    0     0   2192      0  0:00:02  0:00:02 --:--:--  2193
+Running bdd_converter.py...
+Traceback (most recent call last):
+  File "/home/ubuntu/BDD/Dash/xray/bdd_converter.py", line 63, in <module>
+    main()
+  File "/home/ubuntu/BDD/Dash/xray/bdd_converter.py", line 59, in main
+    convert_bdd_to_json(input_file, output_file)
+  File "/home/ubuntu/BDD/Dash/xray/bdd_converter.py", line 53, in convert_bdd_to_json
+    with open(output_file, 'w') as file:
+         ^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: '/home/ubuntu/BDD/Dash/bdd_tests.json'
+Error running bdd_converter.py. Exiting.
+Running xray_extractor_v2.sh...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--     0100  5421  100  5421    0     0   2387      0  0:00:02  0:00:02 --:--:--  2388
+Running bdd_converter.py...
+BDD tests have been saved in '/home/ubuntu/BDD/Dash/bdd_tests.json'
+Pipeline completed successfully.
+Running xray_extractor_v2.sh...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--     0100  5420  100  5420    0     0   2209      0  0:00:02  0:00:02 --:--:--  2208100  5420  100  5420    0     0   2209      0  0:00:02  0:00:02 --:--:--  2208
+Running bdd_converter.py...
+BDD tests have been saved in '/home/ubuntu/BDD/Dash/bdd_tests.json'
+Pipeline completed successfully.

@@ -1,0 +1,381 @@
+{
+    "took": 32,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": {
+            "value": 10000,
+            "relation": "gte"
+        },
+        "max_score": 18.937082,
+        "hits": [
+            {
+                "_index": "allure",
+                "_id": "0GnuspQBh571mEWWAbNa",
+                "_score": 18.937082,
+                "_source": {
+                    "name": "@1.3 - email WD s3_dlp_clean",
+                    "uid": "ae28bcbd06026269",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738167585242,
+                        "stop": 1738168703957,
+                        "duration": 1118715
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"attachments\": [{\"clean\":{\"clean\":\"word\"}}], \"sender\":{\"user\":\"inline\", \"provider\":\"microsoft\", \"workflow\": \"None\"}, \"recipients\": {\"to\": [{\"mode\": \"inline\", \"address\":\"user2@avananlab70.onmicrosoft.com\",\"provider\": \"microsoft\"}]}}",
+                        "s3_dlp_clean",
+                        "s3_dlp"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1836"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-cp-aps1-1",
+                        "cluster": "1",
+                        "ticket": "AUT-1836",
+                        "tag": "mt-prod-cp-aps1-1_c1_AUT-1836_1738167581"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "cZDuspQBld2VDfr4Ac6Q",
+                "_score": 18.937082,
+                "_source": {
+                    "name": "@1.1 - email WD dl_lambda_clean",
+                    "uid": "b94fa462302372b1",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738167585457,
+                        "stop": 1738168163566,
+                        "duration": 578109
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}",
+                        "dl_lambda_clean",
+                        "dl_lambda"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1836"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-cp-aps1-1",
+                        "cluster": "1",
+                        "ticket": "AUT-1836",
+                        "tag": "mt-prod-cp-aps1-1_c1_AUT-1836_1738167581"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "cJDuspQBld2VDfr4Ac4w",
+                "_score": 18.463543,
+                "_source": {
+                    "name": "@1.2 - email WD s3_clean",
+                    "uid": "7d588b6f245991f0",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738167585041,
+                        "stop": 1738168723383,
+                        "duration": 1138342
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}",
+                        "s3_clean",
+                        "s3"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1836"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-cp-aps1-1",
+                        "cluster": "1",
+                        "ticket": "AUT-1836",
+                        "tag": "mt-prod-cp-aps1-1_c1_AUT-1836_1738167581"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "apDtspQBld2VDfr4mM6F",
+                "_score": 15.07672,
+                "_source": {
+                    "name": "@1.2 - email WD s3_clean",
+                    "uid": "2200cd740fbf527e",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738167585147,
+                        "stop": 1738168696232,
+                        "duration": 1111085
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}",
+                        "s3_clean",
+                        "s3"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1836"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-cp-mec1-1",
+                        "cluster": "1",
+                        "ticket": "AUT-1836",
+                        "tag": "mt-prod-cp-mec1-1_c1_AUT-1836_1738167581"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "ymntspQBh571mEWWmLNc",
+                "_score": 14.55311,
+                "_source": {
+                    "name": "@1.3 - email WD s3_dlp_clean",
+                    "uid": "8ade0f66e71f4df7",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738167585142,
+                        "stop": 1738168677052,
+                        "duration": 1091910
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"attachments\": [{\"clean\":{\"clean\":\"word\"}}], \"sender\":{\"user\":\"inline\", \"provider\":\"microsoft\", \"workflow\": \"None\"}, \"recipients\": {\"to\": [{\"mode\": \"inline\", \"address\":\"user2@avananlab70.onmicrosoft.com\",\"provider\": \"microsoft\"}]}}",
+                        "s3_dlp_clean",
+                        "s3_dlp"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1836"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-cp-mec1-1",
+                        "cluster": "1",
+                        "ticket": "AUT-1836",
+                        "tag": "mt-prod-cp-mec1-1_c1_AUT-1836_1738167581"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "a5DtspQBld2VDfr4mM6t",
+                "_score": 14.55311,
+                "_source": {
+                    "name": "@1.1 - email WD dl_lambda_clean",
+                    "uid": "4eddf6eea87cad97",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738167585353,
+                        "stop": 1738168150277,
+                        "duration": 564924
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}",
+                        "dl_lambda_clean",
+                        "dl_lambda"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1836"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-cp-mec1-1",
+                        "cluster": "1",
+                        "ticket": "AUT-1836",
+                        "tag": "mt-prod-cp-mec1-1_c1_AUT-1836_1738167581"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "x2ntspQBh571mEWWL7MW",
+                "_score": 13.365427,
+                "_source": {
+                    "name": "@1.3 - email WD s3_dlp_clean",
+                    "uid": "2e8d7969e906720",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738167585204,
+                        "stop": 1738168667326,
+                        "duration": 1082122
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"attachments\": [{\"clean\":{\"clean\":\"word\"}}], \"sender\":{\"user\":\"inline\", \"provider\":\"microsoft\", \"workflow\": \"None\"}, \"recipients\": {\"to\": [{\"mode\": \"inline\", \"address\":\"user2@avananlab70.onmicrosoft.com\",\"provider\": \"microsoft\"}]}}",
+                        "s3_dlp_clean",
+                        "s3_dlp"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1836"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-3",
+                        "cluster": "22",
+                        "ticket": "AUT-1836",
+                        "tag": "mt-prod-3_c22_AUT-1836_1738167581"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "Z5DtspQBld2VDfr4L849",
+                "_score": 12.832338,
+                "_source": {
+                    "name": "@1.1 - email WD dl_lambda_clean",
+                    "uid": "7792343dbf3856f4",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738167585383,
+                        "stop": 1738168083067,
+                        "duration": 497684
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}",
+                        "dl_lambda_clean",
+                        "dl_lambda"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1836"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-3",
+                        "cluster": "22",
+                        "ticket": "AUT-1836",
+                        "tag": "mt-prod-3_c22_AUT-1836_1738167581"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "S0HtspQB2gzz_sNsLhXq",
+                "_score": 12.220423,
+                "_source": {
+                    "name": "@1.2 - email WD s3_clean",
+                    "uid": "2b15989f1fdc6586",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738167585198,
+                        "stop": 1738168669681,
+                        "duration": 1084483
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}",
+                        "s3_clean",
+                        "s3"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1836"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-3",
+                        "cluster": "22",
+                        "ticket": "AUT-1836",
+                        "tag": "mt-prod-3_c22_AUT-1836_1738167581"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "pT5oIpQB2gzz_sNsUks8",
+                "_score": 8.383284,
+                "_source": {
+                    "name": "@1.1 - Email Clean inline - SMTP",
+                    "uid": "deb637e1a9307af3",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1735743921263,
+                        "stop": 1735743936374,
+                        "duration": 15111
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}",
+                        "Clean inline - SMTP",
+                        "smtp"
+                    ],
+                    "tags": [
+                        "auto_tests",
+                        "TEST_AUT-1603",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-cp-aps1-1",
+                        "cluster": "1",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-cp-aps1-1_c1_AUT-1723_1735743916"
+                    }
+                }
+            }
+        ]
+    }
+}

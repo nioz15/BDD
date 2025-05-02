@@ -1,0 +1,348 @@
+{
+    "took": 13,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": {
+            "value": 10000,
+            "relation": "gte"
+        },
+        "max_score": 17.517988,
+        "hits": [
+            {
+                "_index": "allure",
+                "_id": "x2kks5QBh571mEWWirae",
+                "_score": 17.517988,
+                "_source": {
+                    "name": "@1.3 - email WD s3_dlp_clean",
+                    "uid": "918ed4ad39c86778",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738171163301,
+                        "stop": 1738172245499,
+                        "duration": 1082198
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"attachments\": [{\"clean\":{\"clean\":\"word\"}}], \"sender\":{\"user\":\"inline\", \"provider\":\"microsoft\", \"workflow\": \"None\"}, \"recipients\": {\"to\": [{\"mode\": \"inline\", \"address\":\"user2@avananlab70.onmicrosoft.com\",\"provider\": \"microsoft\"}]}}",
+                        "s3_dlp_clean",
+                        "s3_dlp"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1836"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-3",
+                        "cluster": "22",
+                        "ticket": "AUT-1836",
+                        "tag": "mt-prod-3_c22_AUT-1836_1738171159"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "dJAks5QBld2VDfr4itF9",
+                "_score": 16.989098,
+                "_source": {
+                    "name": "@1.1 - email WD dl_lambda_clean",
+                    "uid": "de918c7deae5ed68",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738171163295,
+                        "stop": 1738171660771,
+                        "duration": 497476
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}",
+                        "dl_lambda_clean",
+                        "dl_lambda"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1836"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-3",
+                        "cluster": "22",
+                        "ticket": "AUT-1836",
+                        "tag": "mt-prod-3_c22_AUT-1836_1738171159"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "yGkks5QBh571mEWWirbD",
+                "_score": 16.989098,
+                "_source": {
+                    "name": "@1.2 - email WD s3_clean",
+                    "uid": "8e2eaa3771455567",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738171163453,
+                        "stop": 1738172296919,
+                        "duration": 1133466
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}",
+                        "s3_clean",
+                        "s3"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1836"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-3",
+                        "cluster": "22",
+                        "ticket": "AUT-1836",
+                        "tag": "mt-prod-3_c22_AUT-1836_1738171159"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "doYPlZEBld2VDfr4pq12",
+                "_score": 4.3571925,
+                "_source": {
+                    "name": "BDD POC - Xray test UI -- @1.1 ",
+                    "uid": "2890d83b24aaff58",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "broken",
+                    "time": {
+                        "start": 1724782686705,
+                        "stop": 1724782693058,
+                        "duration": 6353
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "Password"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1001"
+                    ],
+                    "properties": {
+                        "tag": "mt-prod-3_c22_AUT-1001_1724782684"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "azZzlZEB2gzz_sNs3fNs",
+                "_score": 4.3571925,
+                "_source": {
+                    "name": "BDD POC - Xray test UI -- @1.2 ",
+                    "uid": "ee7ca94368e7cdb4",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1724789207576,
+                        "stop": 1724789218625,
+                        "duration": 11049
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "SAML"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1001"
+                    ],
+                    "properties": {
+                        "tag": "mt-prod-3_c22_AUT-1001_1724789195"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "2l9zlZEBh571mEWW3ZTB",
+                "_score": 4.3571925,
+                "_source": {
+                    "name": "BDD POC - Xray test UI -- @1.4 ",
+                    "uid": "47bc2876560284f9",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1724789271690,
+                        "stop": 1724789276935,
+                        "duration": 5245
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "Google"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1001"
+                    ],
+                    "properties": {
+                        "tag": "mt-prod-3_c22_AUT-1001_1724789195"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "RIYZrpEBld2VDfr4Ia5j",
+                "_score": 4.3571925,
+                "_source": {
+                    "name": "BDD POC - Xray test UI -- @1.1 ",
+                    "uid": "f5515f356775021d",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1725202677192,
+                        "stop": 1725202696104,
+                        "duration": 18912
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "Password"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1001",
+                        "UI"
+                    ],
+                    "properties": {
+                        "tag": "mt-prod-3_c22_AUT-1001_1725202674"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "RYYZrpEBld2VDfr4Ia6r",
+                "_score": 4.3571925,
+                "_source": {
+                    "name": "BDD POC - Xray test UI -- @1.3 ",
+                    "uid": "b540d11b7abaae43",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1725202708249,
+                        "stop": 1725202756110,
+                        "duration": 47861
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "Microsoft"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1001",
+                        "UI"
+                    ],
+                    "properties": {
+                        "tag": "mt-prod-3_c22_AUT-1001_1725202674"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "7jYZrpEB2gzz_sNsIfPQ",
+                "_score": 4.3571925,
+                "_source": {
+                    "name": "BDD POC - Xray test UI -- @1.4 ",
+                    "uid": "ddd818e696ebe0a2",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1725202756113,
+                        "stop": 1725202762002,
+                        "duration": 5889
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "Google"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1001",
+                        "UI"
+                    ],
+                    "properties": {
+                        "tag": "mt-prod-3_c22_AUT-1001_1725202674"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "CzZhrpEB2gzz_sNsSfWY",
+                "_score": 4.3571925,
+                "_source": {
+                    "name": "BDD POC - Xray test UI -- @1.4 ",
+                    "uid": "b35c542fa33bf005",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1725207486879,
+                        "stop": 1725207492308,
+                        "duration": 5429
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "Google"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1001",
+                        "UI"
+                    ],
+                    "properties": {
+                        "tag": "mt-prod-3_c22_AUT-1001_1725207418"
+                    }
+                }
+            }
+        ]
+    }
+}

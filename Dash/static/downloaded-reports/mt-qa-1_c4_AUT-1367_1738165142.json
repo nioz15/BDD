@@ -1,0 +1,340 @@
+{
+    "took": 51,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": {
+            "value": 10000,
+            "relation": "gte"
+        },
+        "max_score": 16.840227,
+        "hits": [
+            {
+                "_index": "allure",
+                "_id": "W2m8spQBh571mEWWM7Fl",
+                "_score": 16.840227,
+                "_source": {
+                    "name": "@1.1 - Manual Quarantine & Restore",
+                    "uid": "4404339abda4681e",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1738165145653,
+                        "stop": 1738165459661,
+                        "duration": 314008
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}",
+                        "smtp"
+                    ],
+                    "tags": [
+                        "Automated",
+                        "UI",
+                        "auto_tests",
+                        "manual_actions",
+                        "TEST_AUT-1367",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-qa-1",
+                        "cluster": "4",
+                        "ticket": "AUT-1367",
+                        "tag": "mt-qa-1_c4_AUT-1367_1738165142"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "3TYjgJEB2gzz_sNsgvJM",
+                "_score": 3.700563,
+                "_source": {
+                    "name": "BDD POC - Xray test UI -- @1.3 ",
+                    "uid": "af4a71e2c62e9cf4",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1724431683120,
+                        "stop": 1724431683834,
+                        "duration": 714
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "Microsoft"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1001"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1001_1724431673"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "PoYjgJEBld2VDfr4g60C",
+                "_score": 3.700563,
+                "_source": {
+                    "name": "Inline User Send an Email to Monitor User -- @1.1 single email parameter with multiple recipients and attachments",
+                    "uid": "dc6715d463e9ae14",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1724431686207,
+                        "stop": 1724431687014,
+                        "duration": 807
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"label\": \"inline\", \"body\": \"clean\", \"attachments\": [{\"malware\":{\"dummy\":\"word\"}}], \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\", \"policy_expectation\": \"Quarantined\"}]}}]"
+                    ],
+                    "tags": [
+                        "yahav"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1001_1724431673"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "4DYjgJEB2gzz_sNsg_LK",
+                "_score": 3.700563,
+                "_source": {
+                    "name": "Login with Different Methods -- @1.3 ",
+                    "uid": "8b6f79b871a3d9a0",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1724431688268,
+                        "stop": 1724431688775,
+                        "duration": 507
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "Microsoft"
+                    ],
+                    "tags": [
+                        "tadela"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1001_1724431673"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "4TYjgJEB2gzz_sNsxvJL",
+                "_score": 3.700563,
+                "_source": {
+                    "name": "Xray for E2E Send and Validate emails -- @1.1 single email parameter with multiple recipients and attachments",
+                    "uid": "ae8f61e7ed190cf6",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1724431695104,
+                        "stop": 1724431697447,
+                        "duration": 2343
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"label\": \"inline_clean\", \"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}]"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1104",
+                        "auto_tests"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1104_1724431692"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "U18jgJEBh571mEWWx5Sb",
+                "_score": 3.700563,
+                "_source": {
+                    "name": "User logs in, retrieves map events, and decrypts the events -- @1.2 ",
+                    "uid": "6d75c0db3518a5da",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1724431703973,
+                        "stop": 1724431704636,
+                        "duration": 663
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "google_mail"
+                    ],
+                    "tags": [
+                        "map"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1104_1724431692"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "QoYjgJEBld2VDfr4yK0Y",
+                "_score": 3.700563,
+                "_source": {
+                    "name": "Login with Different Methods -- @1.2 ",
+                    "uid": "5379c362178b34f9",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1724431706240,
+                        "stop": 1724431707075,
+                        "duration": 835
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "SAML"
+                    ],
+                    "tags": [
+                        "tadela"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1104_1724431692"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "5TYjgJEB2gzz_sNsyPI_",
+                "_score": 3.700563,
+                "_source": {
+                    "name": "Login with Different Methods -- @1.3 ",
+                    "uid": "e5a1061dc375e422",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1724431707076,
+                        "stop": 1724431707775,
+                        "duration": 699
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "Microsoft"
+                    ],
+                    "tags": [
+                        "tadela"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1104_1724431692"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "aV_UgJEBh571mEWW0pTK",
+                "_score": 3.700563,
+                "_source": {
+                    "name": "Xray for E2E Send and Validate emails -- @1.4 single email parameter with multiple recipients and attachments",
+                    "uid": "2d6e08b09c09756d",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "broken",
+                    "time": {
+                        "start": 1724443254391,
+                        "stop": 1724443255565,
+                        "duration": 1174
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"label\": \"dnp_malware\", \"body\": \"clean\", \"attachments\": [{\"malware\":{\"dummy\":\"pdf\"}}], \"recipients\": {\"to\": [{\"mode\": \"dnp\", \"provider\": \"microsoft\", \"workflow\": \"Quarantine\"}]}}]"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1104",
+                        "auto_tests"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1104_1724443245"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "_TbUgJEB2gzz_sNs0_KO",
+                "_score": 3.700563,
+                "_source": {
+                    "name": "User logs in, retrieves map events, and decrypts the events -- @1.2 ",
+                    "uid": "fe838bf3ae7656ca",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1724443264079,
+                        "stop": 1724443265991,
+                        "duration": 1912
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "google_mail"
+                    ],
+                    "tags": [
+                        "map"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1104_1724443245"
+                    }
+                }
+            }
+        ]
+    }
+}

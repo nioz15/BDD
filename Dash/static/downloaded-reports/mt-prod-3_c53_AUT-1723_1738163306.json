@@ -1,0 +1,401 @@
+{
+    "took": 20,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": {
+            "value": 10000,
+            "relation": "gte"
+        },
+        "max_score": 18.255163,
+        "hits": [
+            {
+                "_index": "allure",
+                "_id": "YmmespQBh571mEWWILB3",
+                "_score": 18.255163,
+                "_source": {
+                    "name": "Production Test - Login",
+                    "uid": "5f0186d50ce8e65e",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738163312473,
+                        "stop": 1738163328445,
+                        "duration": 15972
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [],
+                    "tags": [
+                        "TEST_AUT-2057",
+                        "UI",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-3",
+                        "cluster": "53",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-3_c53_AUT-1723_1738163306"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "Y2mespQBh571mEWWILDG",
+                "_score": 18.251812,
+                "_source": {
+                    "name": "@1.1 - Manual Quarantine & Restore",
+                    "uid": "6d78b2cdda6c6fe2",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738163312585,
+                        "stop": 1738163487975,
+                        "duration": 175390
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}",
+                        "smtp"
+                    ],
+                    "tags": [
+                        "Automated",
+                        "UI",
+                        "auto_tests",
+                        "manual_actions",
+                        "TEST_AUT-1367",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-3",
+                        "cluster": "53",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-3_c53_AUT-1723_1738163306"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "YWmespQBh571mEWWILBQ",
+                "_score": 18.234823,
+                "_source": {
+                    "name": "@1.1 - Email Clean inline - SMTP",
+                    "uid": "2dc453d1c22252ff",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738163312454,
+                        "stop": 1738163331840,
+                        "duration": 19386
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}",
+                        "Clean inline - SMTP",
+                        "smtp"
+                    ],
+                    "tags": [
+                        "auto_tests",
+                        "TEST_AUT-1603",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-3",
+                        "cluster": "53",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-3_c53_AUT-1723_1738163306"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "7EGespQB2gzz_sNsIBGl",
+                "_score": 17.727598,
+                "_source": {
+                    "name": "@1.2 - Email Phishing inline - SMTP",
+                    "uid": "a3d1f313bb126ed9",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738163312566,
+                        "stop": 1738163331071,
+                        "duration": 18505
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{\"body\": \"phishing:dummy\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\", \"workflow\": \"alert\"}]}}",
+                        "Phishing inline - SMTP",
+                        "smtp"
+                    ],
+                    "tags": [
+                        "auto_tests",
+                        "TEST_AUT-1603",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-3",
+                        "cluster": "53",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-3_c53_AUT-1723_1738163306"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "7UGespQB2gzz_sNsIBH9",
+                "_score": 17.727598,
+                "_source": {
+                    "name": "@1.3 - Email Malware inline - SMTP",
+                    "uid": "bff93d76e70ccba2",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "passed",
+                    "time": {
+                        "start": 1738163312593,
+                        "stop": 1738163331190,
+                        "duration": 18597
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "{ \"body\": \"clean\", \"attachments\": [{\"malware\":{\"dummy\":\"pdf\"}}], \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\", \"workflow\": \"quarantine\"}]}}",
+                        "Malware inline - SMTP",
+                        "smtp"
+                    ],
+                    "tags": [
+                        "auto_tests",
+                        "TEST_AUT-1603",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-3",
+                        "cluster": "53",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-3_c53_AUT-1723_1738163306"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "sI59PJQBld2VDfr4-2kA",
+                "_score": 5.095694,
+                "_source": {
+                    "name": "@1.1 - Manual Quarantine & Restore",
+                    "uid": "f53c302ac4755080",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1736181353433,
+                        "stop": 1736181458694,
+                        "duration": 105261
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"label\": \"inline_clean\", \"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}]"
+                    ],
+                    "tags": [
+                        "TESTSET_AUT-1792",
+                        "Automated",
+                        "UI",
+                        "auto_tests",
+                        "manual_actions",
+                        "TEST_AUT-1367",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-3",
+                        "cluster": "53",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-3_c53_AUT-1723_1736181346"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "sT59PJQB2gzz_sNs-7Ar",
+                "_score": 5.095694,
+                "_source": {
+                    "name": "@1.1 - EUP login - microsoft",
+                    "uid": "418cec4de66294e0",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1736181383422,
+                        "stop": 1736181400479,
+                        "duration": 17057
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "microsoft",
+                        "microsoft",
+                        "inline"
+                    ],
+                    "tags": [
+                        "TEST_AUT-2058",
+                        "UI",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-3",
+                        "cluster": "53",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-3_c53_AUT-1723_1736181346"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "XY5vPJQBld2VDfr4AGl2",
+                "_score": 5.095694,
+                "_source": {
+                    "name": "@1.1 - EUP login - microsoft",
+                    "uid": "85b0accbd63681b5",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1736180398673,
+                        "stop": 1736180420787,
+                        "duration": 22114
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "microsoft",
+                        "microsoft",
+                        "inline"
+                    ],
+                    "tags": [
+                        "TEST_AUT-2058",
+                        "UI",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-3",
+                        "cluster": "53",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-3_c53_AUT-1723_1736180366"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "do50PJQBld2VDfr4emld",
+                "_score": 5.095694,
+                "_source": {
+                    "name": "@1.1 - Manual Quarantine & Restore",
+                    "uid": "817166d05a0357aa",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1736180734430,
+                        "stop": 1736180840679,
+                        "duration": 106249
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"label\": \"inline_clean\", \"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}]"
+                    ],
+                    "tags": [
+                        "TESTSET_AUT-1792",
+                        "Automated",
+                        "UI",
+                        "auto_tests",
+                        "manual_actions",
+                        "TEST_AUT-1367",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-3",
+                        "cluster": "53",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-3_c53_AUT-1723_1736180727"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "zo6GPJQBld2VDfr4lmlf",
+                "_score": 5.095694,
+                "_source": {
+                    "name": "@1.2 - EUP login - password",
+                    "uid": "f8f347f1409ccbf0",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1736181969508,
+                        "stop": 1736181980205,
+                        "duration": 10697
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "password",
+                        "microsoft",
+                        "inline"
+                    ],
+                    "tags": [
+                        "TEST_AUT-2058",
+                        "UI",
+                        "TESTSET_AUT-1723"
+                    ],
+                    "properties": {
+                        "farm": "mt-prod-3",
+                        "cluster": "53",
+                        "ticket": "AUT-1723",
+                        "tag": "mt-prod-3_c53_AUT-1723_1736181916"
+                    }
+                }
+            }
+        ]
+    }
+}

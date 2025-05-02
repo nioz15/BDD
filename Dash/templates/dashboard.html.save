@@ -1,0 +1,536 @@
+                        const status = test.status;
+
+                        // Find the interval index
+                        const intervalIndex = Math.floor((timestampMs - (now - 24 * oneHour)) / oneHour);
+
+                        if (intervalIndex >= 0 && intervalIndex < 24) {
+                            const intervalTime = intervals[intervalIndex];
+
+                            if (!farmTimeData[farmName][intervalTime]) {
+                                farmTimeData[farmName][intervalTime] = { passed: 0, failed: 0 };
+                            }
+
+                            farmTimeData[farmName][intervalTime][status]++;
+                        }
+                    });
+
+                    // Render the charts
+                    testChart = renderTestStatsChart(passedCount, failedCount, 'testStatsChart');
+                    lastHourChart = renderTestStatsChart(lastHourPassedCount, lastHourFailedCount, 'lastHourStatsChart');
+                    failedTestsChart = renderFailedTestsChart(failedTests, 'failedTestsChart');
+
+                    // Prepare data for the farm status chart
+                    const labels = intervals.map(ts => new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+
+                    // Populate the farm selection dropdown
+                    const farmSelect = document.getElementById('farmSelect');
+                    const farmNames = Array.from(farmNamesSet).sort();
+                    farmNames.forEach(farmName => {
+                        const option = document.createElement('option');
+                        option.value = farmName;
+                        option.textContent = farmName;
+                        farmSelect.appendChild(option);
+                    });
+
+                    // Select the first 3 farms by default
+                    for (let i = 0; i < Math.min(3, farmSelect.options.length); i++) {
+                        farmSelect.options[i].selected = true;
+                    }
+
+                    // Function to render the farm status chart based on selected farms
+                    function updateFarmStatusChart() {
+                        const selectedFarms = Array.from(farmSelect.selectedOptions).map(option => option.value);
+
+                        // Limit the number of farms selected
+                        const MAX_FARMS = 5;
+                        if (selectedFarms.length > MAX_FARMS) {
+                            alert('Please select no more than ' + MAX_FARMS + ' farms at a time.');
+                            // Deselect the last selected option
+                            farmSelect.options[farmSelect.selectedIndex].selected = false;
+                            return;
+                        }
+
+                        const datasets = selectedFarms.map((farmName, index) => {
+                            const dataPoints = [];
+
+                            for (let i = 0; i < intervals.length; i++) {
+                                const intervalTime = intervals[i];
+                                const counts = farmTimeData[farmName][intervalTime];
+
+                                if (counts) {
+                                    const total = counts.passed + counts.failed;
+                                    const passRate = (counts.passed / total) * 100;
+                                    dataPoints.push(passRate);
+                                } else {
+                                    dataPoints.push(null); // No data for this interval
+                                }
+                            }
+
+                            return {
+                                label: farmName,
+                                data: dataPoints,
+                                fill: false,
+                                borderColor: getColor(index),
+                                yAxisID: 'yAxis' + index, // Assign to a unique Y-axis
+                                tension: 0.1,
+                                pointStyle: 'circle',
+                                pointRadius: 3
+                            };
+                        });
+
+                        // Create Y-axes for each farm
+                        const yAxes = selectedFarms.map((farmName, index) => {
+                            return {
+                                id: 'yAxis' + index,
+                                type: 'linear',
+                                position: index % 2 === 0 ? 'left' : 'right', // Alternate sides
+                                grid: {
+                                    drawOnChartArea: index === 0 // Only draw grid lines for the first Y-axis to reduce clutter
+                                },
+                                ticks: {
+                                    min: 0,
+                                    max: 100,
+                                    callback: function(value) {
+                                        return value + '%';
+                                    },
+                                    color: getColor(index) // Match axis color with dataset color
+                                },
+                                title: {
+                                    display: true,
+                                    text: farmName,
+                                    color: getColor(index),
+                                    font: {
+                                        size: 12,
+                                        weight: 'bold'
+                                    }
+                                }
+                            };
+                        });
+
+                        if (farmStatusChart) {
+                            farmStatusChart.destroy();
+                        }
+                        farmStatusChart = renderFarmStatusChart(labels, datasets, yAxes);
+                    }
+
+                    // Initial rendering of the farm status chart
+                    updateFarmStatusChart();
+
+                    // Add event listener to update chart when selection changes
+                    farmSelect.addEventListener('change', updateFarmStatusChart);
+
+                    const itemsPerPage = 25;
+                    let currentPage = 1;
+
+                    function renderList() {
+                        testList.innerHTML = '';
+                        const categoryFilter = document.getElementById('categoryFilter').value;
+                        const searchKeyword = document.getElementById('searchInput').value.toLowerCase();
+
+                        let filteredPassedCount = 0;
+                        let filteredFailedCount = 0;
+                        let filteredLastHourPassedCount = 0;
+                        let filteredLastHourFailedCount = 0;
+                        let filteredFailedTests = {};  // To store failed tests for the filtered category
+
+                        const sortedFiles = Object.keys(files).sort((a, b) => {
+                            return files[b].timestamp - files[a].timestamp;
+                        });
+
+                        const fileNames = sortedFiles.filter(filename => {
+                            if (categoryFilter !== 'all' && !files[filename].categories.has(categoryFilter)) {
+                                return false;
+                            }
+                            if (!filename.toLowerCase().includes(searchKeyword)) {
+                                return false;
+                            }
+
+                            // Calculate filtered counts
+                            files[filename].tests.forEach(test => {
+                                const testTime = new Date(test.start_time).getTime();
+                                const testName = filename.split('_')[2]; // Extract AUT-XXXX from filename
+
+                                if (test.status === 'passed') {
+                                    filteredPassedCount++;
+                                    if (testTime > oneHourAgo) {
+                                        filteredLastHourPassedCount++;
+                                    }
+                                } else if (test.status === 'failed') {
+                                    filteredFailedCount++;
+                                    if (testTime > oneHourAgo) {
+                                        filteredLastHourFailedCount++;
+                                    }
+
+                                    // Track failed tests for the third chart
+                                    if (!filteredFailedTests[testName]) {
+                                        filteredFailedTests[testName] = 0;
+                                    }
+                                    filteredFailedTests[testName]++;
+                                }
+                            });
+
+                            return true;
+                        });
+
+                        const startIndex = (currentPage - 1) * itemsPerPage;
+                        const endIndex = startIndex + itemsPerPage;
+                        const pageFiles = fileNames.slice(startIndex, endIndex);
+
+                        pageFiles.forEach(filename => {
+                            const baseName = filename.replace('.html', '');
+                            const timestamp = files[filename].timestamp;
+                            const readableTimestamp = formatTimestamp(timestamp);
+
+                            const listItem = document.createElement('li');
+                            listItem.innerHTML = `
+                                <div class="clickable-row" onclick="toggleGroup('${filename}')">
+                                    <div class="file-name">${baseName}</div>
+                                    <div class="status-indicators">${getStatusIndicators(files[filename].tests)}</div>
+                                    <div class="actions">
+                                        <a href="https://avanan.atlassian.net/browse/${extractJiraTicket(baseName)}" target="_blank" class="jira-button"><i class="fab fa-jira"></i> Jira</a>
+                                        <span class="timestamp">${readableTimestamp}</span>
+                                    </div>
+                                </div>
+                                <div id="details-${filename}" class="details"></div>`;
+                            testList.appendChild(listItem);
+                        });
+
+                        // Update the charts with filtered counts
+                        updateChart(testChart, filteredPassedCount, filteredFailedCount);
+                        updateChart(lastHourChart, filteredLastHourPassedCount, filteredLastHourFailedCount);
+                        updateFailedTestsChart(failedTestsChart, filteredFailedTests);
+
+                        renderPaginationButtons(fileNames.length);
+                    }
+
+                    function updateChart(chart, passedCount, failedCount) {
+                        const totalTests = passedCount + failedCount;
+                        const passedPercentage = ((passedCount / totalTests) * 100).toFixed(2);
+                        const failedPercentage = ((failedCount / totalTests) * 100).toFixed(2);
+
+                        chart.data.datasets[0].data = [passedCount, failedCount];
+                        chart.data.labels = [
+                            `Passed (${passedPercentage}%)`,
+                            `Failed (${failedPercentage}%)`
+                        ];
+                        chart.update();
+                    }
+
+                    function updateFailedTestsChart(chart, failedTests) {
+                        const labels = Object.keys(failedTests);
+                        const data = Object.values(failedTests);
+
+                        chart.data.datasets[0].data = data;
+                        chart.data.labels = labels;
+                        chart.update();
+                    }
+
+                    function getStatusIndicators(tests) {
+                        return tests.map(test => {
+                            const statusClass = test.status === 'passed' ? 'status-passed' : 'status-failed';
+                            return `<span class="status-indicator ${statusClass}"></span>`;
+                        }).join('');
+                    }
+
+                    function extractJiraTicket(suiteName) {
+                        const match = suiteName.match(/AUT-\d+/);  // Assuming the Jira ticket follows the pattern AUT-XXXX
+                        return match ? match[0] : 'Unknown';
+                    }
+
+                    function renderPaginationButtons(totalFiles) {
+                        const paginationControls = document.getElementById('paginationControls');
+                        paginationControls.innerHTML = '';
+
+                        const totalPages = Math.ceil(totalFiles / itemsPerPage);
+                        const visiblePages = 10;
+                        const startPage = Math.max(1, Math.min(currentPage - Math.floor(visiblePages / 2), totalPages - visiblePages + 1));
+                        const endPage = Math.min(totalPages, startPage + visiblePages - 1);
+
+                        const paginationList = document.createElement('ul');
+                        paginationList.className = 'pagination';
+
+                        const firstButton = document.createElement('li');
+                        firstButton.textContent = 'First';
+                        firstButton.onclick = () => { currentPage = 1; renderList(); };
+                        paginationList.appendChild(firstButton);
+
+                        const prevButton = document.createElement('li');
+                        prevButton.textContent = 'Prev';
+                        prevButton.onclick = () => { currentPage = Math.max(currentPage - 1, 1); renderList(); };
+                        paginationList.appendChild(prevButton);
+
+                        for (let i = startPage; i <= endPage; i++) {
+                            const pageButton = document.createElement('li');
+                            pageButton.textContent = i;
+                            if (i === currentPage) {
+                                pageButton.className = 'active';
+                            }
+                            pageButton.onclick = () => { currentPage = i; renderList(); };
+                            paginationList.appendChild(pageButton);
+                        }
+
+                        const nextButton = document.createElement('li');
+                        nextButton.textContent = 'Next';
+                        nextButton.onclick = () => { currentPage = Math.min(currentPage + 1, totalPages); renderList(); };
+                        paginationList.appendChild(nextButton);
+
+                        const lastButton = document.createElement('li');
+                        lastButton.textContent = 'Last';
+                        lastButton.onclick = () => { currentPage = totalPages; renderList(); };
+                        paginationList.appendChild(lastButton);
+
+                        paginationControls.appendChild(paginationList);
+                    }
+
+                    renderList();
+
+                    document.getElementById('categoryFilter').addEventListener('change', renderList);
+                    document.getElementById('searchInput').addEventListener('input', renderList);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    hideLoader(); // Hide loader even if there's an error
+                });
+
+            document.querySelector('.reset-button').addEventListener('click', function () {
+                showLoader();
+                location.reload();
+            });
+        });
+
+        function formatTimestamp(timestamp) {
+            const date = new Date(timestamp * 1000);
+            return date.toLocaleString();
+        }
+
+        function toggleGroup(filename) {
+            const details = document.getElementById('details-' + filename);
+            if (details.style.display === 'none' || details.style.display === '') {
+                details.style.display = 'block';
+                fetchDetails(filename);
+            } else {
+                details.style.display = 'none';
+            }
+        }
+
+        function fetchDetails(filename) {
+            const details = document.getElementById('details-' + filename);
+            if (details.innerHTML === '') {
+                fetch('static/data.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        const tests = [];
+                        for (const testGroup of Object.values(data)) {
+                            tests.push(...testGroup.filter(test => test.filename === filename));
+                        }
+                        renderTestTable(filename, tests);
+                    })
+                    .catch(error => console.error('Error fetching details:', error));
+            }
+        }
+
+        function renderTestTable(filename, tests) {
+            const details = document.getElementById('details-' + filename);
+            details.innerHTML = `
+                <table class="test-table" id="table-${filename}">
+                    <thead>
+                        <tr class="static-header">
+                            <th onclick="sortTable('${filename}', 0)">Test Name &#x25BC;</th>
+                            <th onclick="sortTable('${filename}', 1)">Start Time &#x25BC;</th>
+                            <th onclick="sortTable('${filename}', 2)">Duration &#x25BC;</th>
+                            <th onclick="sortTable('${filename}', 3)">Status &#x25BC;</th>
+                            <th>Allure Stats</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            `;
+
+            const tableBody = details.querySelector('tbody');
+            tests.forEach(test => {
+                const testName = test.name;
+                const status = test.status;
+                const startTime = new Date(test.start_time).toLocaleString();
+                const duration = test.duration + ' ms';
+                const statusClass = status === 'passed' ? 'status-passed-row' : 'status-failed-row';
+
+                const row = document.createElement('tr');
+                row.classList.add(statusClass, 'highlight-row');
+                row.innerHTML = `
+                    <td>${testName}</td>
+                    <td data-value="${test.start_time}">${startTime}</td>
+                    <td data-value="${test.duration}">${duration}</td>
+                    <td>${status}</td>
+                    <td><a href="/download/${filename}" target="_blank">View Report</a></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function renderTestStatsChart(passedCount, failedCount, chartId) {
+            const ctx = document.getElementById(chartId).getContext('2d');
+            return new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Passed', 'Failed'],
+                    datasets: [{
+                        label: 'Test Results',
+                        data: [passedCount, failedCount],
+                        backgroundColor: ['#4CAF50', '#F44336'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    const count = tooltipItem.raw;
+                                    const total = passedCount + failedCount;
+                                    const percentage = ((count / total) * 100).toFixed(2);
+                                    return `${tooltipItem.label}: ${count} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderFailedTestsChart(failedTests, chartId) {
+            const ctx = document.getElementById(chartId).getContext('2d');
+
+            // Sort the failedTests object by the number of failures (descending)
+            const sortedFailedTests = Object.entries(failedTests)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5); // Take the top 5 most failed tests
+
+            const labels = sortedFailedTests.map(test => test[0]);  // Get the test names (labels)
+            const data = sortedFailedTests.map(test => test[1]);    // Get the failure counts (data)
+
+            return new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Failed Tests',
+                        data: data,
+                        backgroundColor: '#F44336',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Function to render the farm status chart
+        function renderFarmStatusChart(labels, datasets, yAxes) {
+            const ctx = document.getElementById('farmStatusChart').getContext('2d');
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Farm Status Over Time'
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Time'
+                            }
+                        },
+                        // Dynamically add Y-axes
+                        ...yAxes.reduce((axes, yAxis) => {
+                            axes[yAxis.id] = yAxis;
+                            return axes;
+                        }, {})
+                    }
+                }
+            });
+        }
+
+        // Helper function to get colors from a predefined palette
+        function getColor(index) {
+            const colors = [
+                '#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231',
+                '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe',
+                '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000',
+                '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080'
+            ];
+            return colors[index % colors.length];
+        }
+
+        // Function to sort the table columns
+        function sortTable(filename, columnIndex) {
+            const table = document.getElementById('table-' + filename);
+            const tbody = table.tBodies[0];
+            const rows = Array.from(tbody.rows);
+            const isNumeric = columnIndex === 1 || columnIndex === 2; // Start Time and Duration columns are numeric
+            const isAscending = table.getAttribute('data-sort-order') !== 'asc';
+
+            rows.sort((a, b) => {
+                let aText = a.cells[columnIndex].getAttribute('data-value') || a.cells[columnIndex].innerText;
+                let bText = b.cells[columnIndex].getAttribute('data-value') || b.cells[columnIndex].innerText;
+
+                if (isNumeric) {
+                    aText = parseFloat(aText);
+                    bText = parseFloat(bText);
+                } else {
+                    aText = aText.toLowerCase();
+                    bText = bText.toLowerCase();
+                }
+
+                if (aText < bText) return isAscending ? -1 : 1;
+                if (aText > bText) return isAscending ? 1 : -1;
+                return 0;
+            });
+
+            // Remove existing rows and append sorted rows
+            tbody.innerHTML = '';
+            rows.forEach(row => tbody.appendChild(row));
+
+            // Update sort order attribute
+            table.setAttribute('data-sort-order', isAscending ? 'asc' : 'desc');
+        }
+
+    </script>
+
+    <!-- Footer -->
+    <footer class="signature">
+        <p>&copy; 2024 Automation Team. All rights reserved.</p>
+    </footer>
+</body>
+</html>

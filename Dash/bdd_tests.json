@@ -1,0 +1,225 @@
+[
+  {
+    "steps": [
+      "Given user is signed in",
+      "And navigated to policy",
+      "Then <saas> policy rules are loaded and running"
+    ],
+    "examples": {
+      "saas": [
+        "microsoft",
+        "google"
+      ]
+    }
+  },
+  {
+    "steps": [
+      "Given user is signed in",
+      "Then I should be on the dashboard page",
+      "Then Cards are loaded",
+      "Then security info and map are loaded",
+      "Then security events table is loaded",
+      "When click on active users or emails in <saas>",
+      "Then users and emails numbers are equal <saas>"
+    ],
+    "examples": {
+      "saas": [
+        "microsoft",
+        "google"
+      ]
+    }
+  },
+  {
+    "steps": [
+      "Given login page is open",
+      "When I choose <loginMethod> as login method",
+      "Then I should be on the dashboard page"
+    ],
+    "examples": {
+      "loginMethod": [
+        "Password",
+        "Microsoft",
+        "Google",
+        "SAML"
+      ]
+    }
+  },
+  {
+    "steps": [
+      "When I send emails using <email_parameters>",
+      "Then Emails arrived to all recipients",
+      "Given login via api",
+      "When Searching for subject in <page> page",
+      "Then <threat_type> record is created in <page> page",
+      "When performing <action> from <page>",
+      "Then <action> is performed from <page>"
+    ],
+    "examples": {
+      "threat_type": [
+        "malware",
+        "malware"
+      ],
+      "action": [
+        "restore",
+        "restore"
+      ],
+      "page": [
+        "event",
+        "entity"
+      ],
+      "email_parameters": [
+        "[{\"label\": \"inline_malware\", \"body\": \"clean\", \"attachments\": [{\"malware\":{\"dummy\":\"pdf\"}}], \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\", \"workflow\": \"quarantine\"}]}}]",
+        "[{\"label\": \"inline_malware\", \"body\": \"clean\", \"attachments\": [{\"malware\":{\"dummy\":\"pdf\"}}], \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\", \"workflow\": \"quarantine\"}]}}]"
+      ]
+    }
+  },
+  {
+    "steps": [
+      "Given user is signed in",
+      "And navigated to events",
+      "Then events page cards are loaded",
+      "And events table is loaded"
+    ],
+    "examples": {}
+  },
+  {
+    "steps": [
+      "When I send emails using <email_parameters>",
+      "Then Emails arrived to all recipients",
+      "Given user is in mailbox",
+      "When reporting email as phishing",
+      "Then email is reported",
+      "When Searching for subject in <page> page",
+      "Then <threat_type> record is created in <page> page",
+      "When performing <action> from <page>",
+      "Then <action> is performed from <page>"
+    ],
+    "examples": {
+      "email_parameters": [
+        "[{\"label\": \"inline_clean\", \"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}]",
+        "[{\"label\": \"inline_clean\", \"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}]"
+      ],
+      "action": [
+        "decline",
+        "quarantine"
+      ],
+      "page": [
+        "entity",
+        "entity"
+      ],
+      "threat_type": []
+    }
+  },
+  {
+    "steps": [
+      "When I send emails using <email_parameters>",
+      "Then Emails arrived to all recipients",
+      "Given user is signed in",
+      "When search for mail in mail explorer",
+      "Then Entity page is opened",
+      "When clicking on quarantine button",
+      "Then Entity is quarantined",
+      "And Email deleted from mailbox",
+      "When clicking on restore button",
+      "Then Entity is restored",
+      "And Emails arrived to all recipients"
+    ],
+    "examples": {
+      "email_parameters": [
+        "[{\"label\": \"inline_clean\", \"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}]"
+      ]
+    }
+  },
+  {
+    "steps": [
+      "When I send emails using <email_parameters>",
+      "Then Emails arrived to all recipients"
+    ],
+    "examples": {
+      "label": [
+        "inline_clean",
+        "inline_malware",
+        "inline_phishing",
+        "dnp_malware",
+        "dnp_phishing",
+        "inline__outgoing_dlp",
+        "inline__outgoing_clean"
+      ],
+      "email_parameters": [
+        "[{\"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}]",
+        "[{\"body\": \"clean\", \"attachments\": [{\"malware\":{\"dummy\":\"pdf\"}}], \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\", \"workflow\": \"quarantine\"}]}}]",
+        "[{\"body\": \"clean\", \"attachments\": [{\"phishing\":{\"dummy\":\"pdf\"}}], \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\", \"workflow\": \"alert\"}]}}]",
+        "[{\"body\": \"clean\", \"attachments\": [{\"malware\":{\"dummy\":\"pdf\"}}], \"recipients\": {\"to\": [{\"mode\": \"dnp\", \"provider\": \"microsoft\", \"workflow\": \"quarantine\"}]}}]",
+        "[{\"body\": \"clean\", \"attachments\": [{\"phishing\":{\"dummy\":\"word\"}}], \"recipients\": {\"to\": [{\"mode\": \"dnp\", \"provider\": \"microsoft\", \"workflow\": \"alert\"}]}}]",
+        "[{\"body\": \"clean\", \"attachments\": [{\"dlp\":{\"pii,pci\":\"pdf\"}}], \"sender\":{\"user\":\"inline\", \"provider\":\"microsoft\", \"workflow\": \"quarantine\"}, \"recipients\": {\"to\": [{\"mode\": \"inline\", \"address\":\"ExternalQA1@avananauto18.onmicrosoft.com\",\"provider\": \"microsoft\", \"workflow\":\"None\"}]}}]",
+        "[{\"body\": \"clean\", \"attachments\": [{\"clean\":{\"clean\":\"word\"}}], \"sender\":{\"user\":\"inline\", \"provider\":\"microsoft\", \"workflow\":\"None\"}, \"recipients\": {\"to\": [{\"mode\": \"inline\", \"address\":\"ExternalQA1@avananauto18.onmicrosoft.com\",\"provider\": \"microsoft\"}]}}]"
+      ]
+    }
+  },
+  {
+    "steps": [
+      "Given user is signed in",
+      "And navigated to mail_explorer",
+      "Then all mail_explorer page components are loaded"
+    ],
+    "examples": {}
+  },
+  {
+    "steps": [
+      "Given user is signed in",
+      "And navigated to report_phishing",
+      "Then all report_phishing page components are loaded"
+    ],
+    "examples": {}
+  },
+  {
+    "steps": [
+      "Given user is signed in",
+      "When filtering by <filters> in mail explorer",
+      "Then results are displayed"
+    ],
+    "examples": {
+      "filters": [
+        "[{\"field\": \"Subject\", \"text\": \"AUTO\", \"dropdown\": \"contains\"},{\"field\": \"sender email\", \"text\": \"Automation\", \"dropdown\": \"contains\"}, {\"field\": \"time\", \"period_type\": \"Last\", \"time_value\": \"2\", \"time_unit\": \"Month\"}]",
+        "[{\"field\": \"Subject\", \"text\": \"AUTO\", \"dropdown\": \"contains\"},{\"field\": \"sender email\", \"text\": \"Automation\", \"dropdown\": \"contains\"}, {\"field\": \"time\", \"period_type\": \"Last\", \"time_value\": \"1\", \"time_unit\": \"Month\"}]",
+        "[{\"field\": \"sender email\", \"text\": \"Automation@avtestqa.com\", \"dropdown\": \"match\"}, {\"field\": \"time\", \"period_type\": \"Last\", \"time_value\": \"1\", \"time_unit\": \"Month\"}]",
+        "[{\"field\": \"detection\", \"parent\": \"Avanan\", \"values\": [\"Phishing\", \"Malware\"]}, {\"field\": \"time\", \"period_type\": \"Last\", \"time_value\": \"1\", \"time_unit\": \"Month\"}]",
+        "[{\"field\": \"detection\", \"parent\": \"Microsoft\", \"values\": [\"Phishing\", \"Malware\"]}, {\"field\": \"time\", \"period_type\": \"Last\", \"time_value\": \"1\", \"time_unit\": \"Month\"}]",
+        "[{\"field\": \"quarantine state\", \"parent\": \"Avanan\", \"values\": [\"Quarantined\"]}, {\"field\": \"time\", \"period_type\": \"Last\", \"time_value\": \"1\", \"time_unit\": \"Year\"}]",
+        "[{\"field\": \"quarantine state\", \"parent\": \"Microsoft\", \"values\": [\"Quarantined\"]}, {\"field\": \"time\", \"period_type\": \"Last\", \"time_value\": \"1\", \"time_unit\": \"Year\"}]",
+        "[{\"field\": \"quarantine state\", \"parent\": \"Google\", \"values\": [\"Delivered to Inbox\"]}, {\"field\": \"time\", \"period_type\": \"Last\", \"time_value\": \"1\", \"time_unit\": \"Year\"}]"
+      ]
+    }
+  },
+  {
+    "steps": [
+      "Given login via api",
+      "When creating <security_type> policy with params <mode> <sectools> <provider> <users>",
+      "Then Policy is created and running",
+      "When I send emails using <email_parameters>",
+      "Then Emails arrived to all recipients",
+      "When deleting policy",
+      "Then Policy is deleted"
+    ],
+    "examples": {
+      "security_type": [
+        "dlp"
+      ],
+      "mode": [
+        "inline"
+      ],
+      "sectools": [
+        "avanan_dlp"
+      ],
+      "provider": [
+        "office365_emails"
+      ],
+      "users": [
+        "inline6"
+      ],
+      "email_parameters": [
+        "[{\"label\": \"inline__outgoing_dlp\", \"body\": \"clean\", \"attachments\": [{\"dlp\":{\"pii,pci\":\"pdf\"}}], \"sender\":{\"address\":\"inline6@avananlab18.onmicrosoft.com\", \"provider\":\"microsoft\", \"workflow\": \"quarantine\"}, \"recipients\": {\"to\": [{\"mode\": \"inline\", \"address\":\"ExternalQA1@avananauto18.onmicrosoft.com\",\"provider\": \"microsoft\", \"workflow\":\"None\"}]}}]"
+      ]
+    }
+  }
+]

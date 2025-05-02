@@ -1,0 +1,358 @@
+{
+    "took": 18,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": {
+            "value": 10000,
+            "relation": "gte"
+        },
+        "max_score": 16.857538,
+        "hits": [
+            {
+                "_index": "allure",
+                "_id": "jpBzspQBld2VDfr4Esmm",
+                "_score": 16.857538,
+                "_source": {
+                    "name": "@1.4 - e2e&UI static url:Ignore url",
+                    "uid": "9ce34c86e916f221",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1738160346855,
+                        "stop": 1738160652074,
+                        "duration": 305219
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"label\": \"ctp\", \"body\":\"ctp:ignore\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}]",
+                        "static url:Ignore"
+                    ],
+                    "tags": [
+                        "UI",
+                        "auto_tests",
+                        "TESTSET_AUT-2229",
+                        "TEST_AUT-2040"
+                    ],
+                    "properties": {
+                        "farm": "mt-qa-1",
+                        "cluster": "4",
+                        "ticket": "AUT-2040",
+                        "tag": "mt-qa-1_c4_AUT-2040_1738160341"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "2WlzspQBh571mEWWEq5Y",
+                "_score": 16.847975,
+                "_source": {
+                    "name": "@1.2 - e2e&UI static url:Blocked url",
+                    "uid": "47e19f76a4d29bd3",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1738160346778,
+                        "stop": 1738160651041,
+                        "duration": 304263
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"label\": \"ctp\", \"body\":\"ctp:block\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}]",
+                        "static url:Blocked"
+                    ],
+                    "tags": [
+                        "UI",
+                        "auto_tests",
+                        "TESTSET_AUT-2229",
+                        "TEST_AUT-2040"
+                    ],
+                    "properties": {
+                        "farm": "mt-qa-1",
+                        "cluster": "4",
+                        "ticket": "AUT-2040",
+                        "tag": "mt-qa-1_c4_AUT-2040_1738160341"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "2GlzspQBh571mEWWEq4x",
+                "_score": 16.308493,
+                "_source": {
+                    "name": "@1.3 - e2e&UI static url:Blocked&Allow&Ignore url",
+                    "uid": "2a9bf0c7c2c919bb",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1738160346777,
+                        "stop": 1738160663626,
+                        "duration": 316849
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"label\": \"ctp\", \"body\":\"ctp:block;allow;ignore\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}]",
+                        "static url:Blocked&Allow&Ignore"
+                    ],
+                    "tags": [
+                        "UI",
+                        "auto_tests",
+                        "TESTSET_AUT-2229",
+                        "TEST_AUT-2040"
+                    ],
+                    "properties": {
+                        "farm": "mt-qa-1",
+                        "cluster": "4",
+                        "ticket": "AUT-2040",
+                        "tag": "mt-qa-1_c4_AUT-2040_1738160341"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "jUFzspQB2gzz_sNsEhB8",
+                "_score": 16.308493,
+                "_source": {
+                    "name": "@1.1 - e2e&UI static url:Allow url",
+                    "uid": "5cdf230807768e0c",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "failed",
+                    "time": {
+                        "start": 1738160346779,
+                        "stop": 1738160664782,
+                        "duration": 318003
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"label\": \"ctp\", \"body\":\"ctp:allow\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}]",
+                        "static url:Allow"
+                    ],
+                    "tags": [
+                        "UI",
+                        "auto_tests",
+                        "TESTSET_AUT-2229",
+                        "TEST_AUT-2040"
+                    ],
+                    "properties": {
+                        "farm": "mt-qa-1",
+                        "cluster": "4",
+                        "ticket": "AUT-2040",
+                        "tag": "mt-qa-1_c4_AUT-2040_1738160341"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "3TYjgJEB2gzz_sNsgvJM",
+                "_score": 3.7006207,
+                "_source": {
+                    "name": "BDD POC - Xray test UI -- @1.3 ",
+                    "uid": "af4a71e2c62e9cf4",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1724431683120,
+                        "stop": 1724431683834,
+                        "duration": 714
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "Microsoft"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1001"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1001_1724431673"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "PoYjgJEBld2VDfr4g60C",
+                "_score": 3.7006207,
+                "_source": {
+                    "name": "Inline User Send an Email to Monitor User -- @1.1 single email parameter with multiple recipients and attachments",
+                    "uid": "dc6715d463e9ae14",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1724431686207,
+                        "stop": 1724431687014,
+                        "duration": 807
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"label\": \"inline\", \"body\": \"clean\", \"attachments\": [{\"malware\":{\"dummy\":\"word\"}}], \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\", \"policy_expectation\": \"Quarantined\"}]}}]"
+                    ],
+                    "tags": [
+                        "yahav"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1001_1724431673"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "4DYjgJEB2gzz_sNsg_LK",
+                "_score": 3.7006207,
+                "_source": {
+                    "name": "Login with Different Methods -- @1.3 ",
+                    "uid": "8b6f79b871a3d9a0",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1724431688268,
+                        "stop": 1724431688775,
+                        "duration": 507
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "Microsoft"
+                    ],
+                    "tags": [
+                        "tadela"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1001_1724431673"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "4TYjgJEB2gzz_sNsxvJL",
+                "_score": 3.7006207,
+                "_source": {
+                    "name": "Xray for E2E Send and Validate emails -- @1.1 single email parameter with multiple recipients and attachments",
+                    "uid": "ae8f61e7ed190cf6",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1724431695104,
+                        "stop": 1724431697447,
+                        "duration": 2343
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "[{\"label\": \"inline_clean\", \"body\": \"clean\", \"recipients\": {\"to\": [{\"mode\": \"inline\", \"provider\": \"microsoft\"}]}}]"
+                    ],
+                    "tags": [
+                        "TEST_AUT-1104",
+                        "auto_tests"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1104_1724431692"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "U18jgJEBh571mEWWx5Sb",
+                "_score": 3.7006207,
+                "_source": {
+                    "name": "User logs in, retrieves map events, and decrypts the events -- @1.2 ",
+                    "uid": "6d75c0db3518a5da",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1724431703973,
+                        "stop": 1724431704636,
+                        "duration": 663
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "google_mail"
+                    ],
+                    "tags": [
+                        "map"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1104_1724431692"
+                    }
+                }
+            },
+            {
+                "_index": "allure",
+                "_id": "QoYjgJEBld2VDfr4yK0Y",
+                "_score": 3.7006207,
+                "_source": {
+                    "name": "Login with Different Methods -- @1.2 ",
+                    "uid": "5379c362178b34f9",
+                    "parentUid": "98d3104e051c652961429bf95fa0b5d6",
+                    "status": "skipped",
+                    "time": {
+                        "start": 1724431706240,
+                        "stop": 1724431707075,
+                        "duration": 835
+                    },
+                    "flaky": false,
+                    "newFailed": false,
+                    "newPassed": false,
+                    "newBroken": false,
+                    "retriesCount": 0,
+                    "retriesStatusChange": false,
+                    "parameters": [
+                        "SAML"
+                    ],
+                    "tags": [
+                        "tadela"
+                    ],
+                    "properties": {
+                        "tag": "mt-qa-1_c4_AUT-1104_1724431692"
+                    }
+                }
+            }
+        ]
+    }
+}

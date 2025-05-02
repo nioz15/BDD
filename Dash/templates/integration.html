@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Data Search</title>
+    <!-- Include Bootstrap CSS from a CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <!-- Include Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <!-- Include Font Awesome for icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-jLKHWMpTB2FgC/6bP0zFyc5IGD0T1tAgNxblA30PkjpYt5/6Z4frJ68JXo6L9cVd" crossorigin="anonymous">
+    <!-- Custom Styles -->
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+        }
+
+        /* Navbar styling */
+        .navbar {
+            background-color: #ffffff;
+            padding: 15px 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5em;
+            color: #667eea;
+        }
+
+        .navbar-brand span {
+            color: #764ba2;
+        }
+
+        .navbar-nav .nav-link {
+            color: #555;
+            font-weight: 500;
+            margin-right: 20px;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #667eea;
+        }
+
+        /* Hero section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            padding: 80px 0 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1), transparent 70%);
+            animation: rotateBackground 20s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes rotateBackground {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hero h1 {
+            font-weight: 700;
+            font-size: 3em;
+            z-index: 1;
+            position: relative;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            margin-top: 20px;
+            z-index: 1;
+            position: relative;
+        }
+
+        /* Search bar */
+        .search-container {
+            max-width: 600px;
+            margin: -40px auto 30px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .search-container .form-control {
+            height: 50px;
+            font-size: 1.1em;
+            border-radius: 30px 0 0 30px;
+            border: none;
+            padding-left: 25px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container .btn {
+            height: 50px;
+            font-size: 1.1em;
+            border-radius: 0 30px 30px 0;
+            background-color: #667eea;
+            color: #ffffff;
+            border: none;
+            padding: 0 30px;
+        }
+
+        .search-container .btn:hover {
+            background-color: #5a67d8;
+        }
+
+        /* Examples section */
+        .examples-container {
+            max-width: 800px;
+            margin: 0 auto 50px;
+            text-align: center;
+        }
+
+        .examples-container p {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .examples-container a {
+            color: #667eea;
+            font-weight: 500;
+            text-decoration: none;
+            margin: 0 5px;
+            transition: color 0.3s;
+        }
+
+        .examples-container a:hover {
+            color: #764ba2;
+        }
+
+        /* Results section */
+        .result-container {
+            max-width: 800px;
+            margin: 0 auto 60px;
+        }
+
+        .result-item {
+            background-color: #ffffff;
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .result-item h3 {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .result-item p {
+            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 10px;
+            word-wrap: break-word;
+            position: relative;
+        }
+
+        .result-item a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .result-item a:hover {
+            color: #764ba2;
+        }
+
+        .no-results {
+            text-align: center;
+            font-size: 1.3em;
+            color: #777;
+            margin-top: 50px;
+        }
+
+        /* Password visibility toggle */
+        .password-field {
+            display: flex;
+            align-items: center;
+        }
+
+        .password-field .toggle-password {
+            margin-left: 10px;
+            cursor: pointer;
+            color: #667eea;
+            border: none;
+            background: none;
+            padding: 0;
+            font-size: 1em;
+        }
+
+        .password-field .toggle-password:hover {
+            color: #764ba2;
+        }
+
+        /* Footer styling */
+        .footer {
+            background-color: #ffffff;
+            padding: 20px 0;
+            text-align: center;
+            color: #555;
+            border-top: 1px solid #eaeaea;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 1em;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2.2em;
+            }
+
+            .search-container {
+                margin-top: -20px;
+            }
+
+            .examples-container p {
+                font-size: 1em;
+            }
+
+            .result-item {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-md">
+        <a class="navbar-brand" href="#">Customer<span>Search</span></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"><i class="fas fa-bars" style="color: #555;"></i></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Future navigation items can be added here -->
+            <ul class="navbar-nav ml-auto">
+                <!-- Example navigation items -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Support</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Welcome to the Customer Data Search</h1>
+        <p>Find customer information quickly and easily</p>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <div class="input-group mb-3">
+            <input type="text" id="searchInput" class="form-control" placeholder="Enter any parameter to search..." aria-label="Search Input" aria-describedby="search-button" />
+            <div class="input-group-append">
+                <button class="btn" type="button" id="search-button" onclick="performSearch()"><i class="fas fa-search"></i> Search</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Examples Section -->
+    <div class="examples-container">
+        <p>Try searching for:
+            <a href="#" onclick="setSearchTerm('avananlab18')">avananlab18</a>,
+            <a href="#" onclick="setSearchTerm('qa-1-cont-al18')">qa-1-cont-al18</a>,
+            <a href="#" onclick="setSearchTerm('mt-qa-1')">mt-qa-1</a>,
+            <a href="#" onclick="setSearchTerm('mt-prod-3')">mt-prod-3</a>,
+            <a href="#" onclick="setSearchTerm('cp')">cp</a>
+        </p>
+    </div>
+
+    <!-- Results Section -->
+    <div id="results" class="result-container"></div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2024 Automation Team. All rights reserved.</p>
+    </div>
+
+    <!-- Include jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Script -->
+    <script>
+        // Data 
+        const data = [
+    {
+        "customer_name": "prodcpca1contauto19",
+        "login_page": "https://prodcpca1contauto19.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-ca-1",
+        "cluster": "1",
+        "admin_user": "user1@avananauto19.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto19"
+    },
+    {
+        "customer_name": "prod-3-c45-auto14-cont",
+        "login_page": "https://prod-3-c45-auto14-cont.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "45",
+        "admin_user": "user1@avananauto14.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto14"
+    },
+    {
+        "customer_name": "prod-sw-5-12-auto39",
+        "login_page": "https://prod-sw-5-12-auto39.sonicwallcloudsec.com",
+        "farm_name": "mt-prod-sw-5",
+        "cluster": "12",
+        "admin_user": "user1@avananauto39.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto39"
+    },
+    {
+        "customer_name": "user1-autoavanan",
+        "login_page": "https://portal.checkpoint.com/dashboard/email&collaboration/cgs1#/",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "1",
+        "admin_user": "user2@avananauto28.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto28"
+    },
+
+    {
+        "customer_name": "prod-3-c50-cont-lab70",
+        "login_page": "https://prod-3-c50-cont-lab70.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "50",
+        "admin_user": "user1@avananlab70.onmicrosoft.com",
+        "password": "B(kuG7y#+24.;w~vcZ7Wd8",
+        "tenant": "avananlab70"
+    },
+    {
+        "customer_name": "lab40-cont-cp-euw2-1-c1",
+        "login_page": "https://lab40-cont-cp-euw2-1-c1.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-euw2-1",
+        "cluster": "1",
+        "admin_user": "user1@avananlab40.onmicrosoft.com",
+        "password": "38DwCCxUIx6?3gs?1!ajhdsMvT$K",
+        "tenant": "avananlab40"
+    },
+    {
+        "customer_name": "prod-3-33-cont-auto42",
+        "login_page": "https://prod-3-33-cont-auto42.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "33",
+        "admin_user": "user1@avananauto42.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto42"
+    },
+    {
+        "customer_name": "prod-3-30-cont-lab201",
+        "login_page": "https://prod-3-30-cont-lab201.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "30",
+        "admin_user": "user1@avananlab201.onmicrosoft.com",
+        "password": "k5W*Qg_79)y{S+Y@};e^Nm",
+        "tenant": "avananlab201"
+    },
+    {
+        "customer_name": "sw-eu-2-cont-auto43",
+        "login_page": "https://sw-eu-2-cont-auto43.sonicwallcloudsec.com",
+        "farm_name": "mt-prod-sw-eu-2",
+        "cluster": "5",
+        "admin_user": "user1@avananauto43.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto43"
+    },
+    {
+        "customer_name": "av-ca-2-labauto3-conti",
+        "login_page": "https://av-ca-2-labauto3-conti.avanan.net",
+        "farm_name": "mt-prod-av-ca-2",
+        "cluster": "1",
+        "admin_user": "user1@avananlabauto3.onmicrosoft.com",
+        "password": "5-|wpLeHpT<$>i1w11N+&oby",
+        "tenant": "avananlabauto3"
+    },
+    {
+        "customer_name": "cp-us-2-11-cont-auto47",
+        "login_page": "https://cp-us-2-11-cont-auto47.checkpointcloudsec.com/",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "11",
+        "admin_user": "user1@avananauto47.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto47"
+    },
+    {
+        "customer_name": "ob-cp-mec1-1-auto41",
+        "login_page": "http://portal.checkpoint.com",
+        "farm_name": "mt-prod-cp-mec1-1",
+        "cluster": "1",
+        "admin_user": "user1@avananauto41.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto41"
+    },
+    {
+        "customer_name": "prod-3-cont-c31-auto35",
+        "login_page": "https://prod-3-cont-c31-auto35.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "31",
+        "admin_user": "user1@avananauto35.onmicrosoft.com",
+        "password": "R8z2nF6^&{$xcY<Sgu.97~",
+        "tenant": "avananauto35"
+    },
+    {
+        "customer_name": "releaser-prod-av-ca-2-auto55",
+        "login_page": "https://releaser-prod-av-ca-2-auto55.avanan.net/",
+        "farm_name": "mt-prod-av-ca-2",
+        "cluster": "1-Releaser",
+        "admin_user": "user1@avananauto55.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto55"
+    },
+    {
+        "customer_name": "ng-46-auto30-2009",
+        "login_page": "https://ng-46-auto30-2009.avanan-dev.net",
+        "farm_name": "mt-rnd-ng-46",
+        "cluster": "1",
+        "admin_user": "user1@avananauto30.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto30"
+    },
+    {
+        "customer_name": "prod-3-con-lab34-5",
+        "login_page": "https://prod-3-con-lab34-5.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "18",
+        "admin_user": "user1@avananlab34.onmicrosoft.com",
+        "password": "n2#bD4VysXfZr}3x*uam+[",
+        "tenant": "avananlab34"
+    },
+    {
+        "customer_name": "cp-eu-2-10-cont-auto74",
+        "login_page": "https://cp-eu-2-10-cont-auto74.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-eu-2",
+        "cluster": "10",
+        "admin_user": "user1@avananauto74.onmicrosoft.com",
+        "password": "Wi<!G^SL85C08S7r>8+WiB_W(mY",
+        "tenant": "avananauto74"
+    },
+    {
+        "customer_name": "prod-sw-5-11-cont-lab9",
+        "login_page": "https://prod-sw-5-11-cont-lab9.sonicwallcloudsec.com",
+        "farm_name": "mt-prod-sw-5",
+        "cluster": "11",
+        "admin_user": "user1@avananlab9.onmicrosoft.com",
+        "password": "m2]p;Q[i+pC2.f=28|%3q695",
+        "tenant": "avananlab9"
+    },
+    {
+        "customer_name": "mt-cont-autotest-29-lab21",
+        "login_page": null,
+        "farm_name": "mt-autotest-29",
+        "cluster": null,
+        "admin_user": null,
+        "password": null,
+        "tenant": null
+    },
+    {
+        "customer_name": "mt-qa-1-7-cont-auto51",
+        "login_page": "https://mt-qa-1-7-cont-auto51.avanan.net",
+        "farm_name": "mt-qa-1",
+        "cluster": "7",
+        "admin_user": "user1@avananauto51.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto51"
+    },
+    {
+        "customer_name": "mt-prod-av-1-rules-test",
+        "login_page": null,
+        "farm_name": "mt-prod-av-1",
+        "cluster": null,
+        "admin_user": null,
+        "password": null,
+        "tenant": null
+    },
+    {
+        "customer_name": "cpeu22contauto33",
+        "login_page": "https://cpeu22contauto33.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-eu-2",
+        "cluster": "2",
+        "admin_user": "user1@avananauto33.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto33"
+    },
+    {
+        "customer_name": "prod-3-con-lab7",
+        "login_page": "https://prod-3-con-lab7.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "25",
+        "admin_user": "user1@avananauto7.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto7"
+    },
+    {
+        "customer_name": "prod-3-con-lab44",
+        "login_page": "https://prod-3-con-lab44.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "17",
+        "admin_user": "user1@avananlab44.onmicrosoft.com",
+        "password": "pRx8raCeTukN;K!w*@:%G<",
+        "tenant": "avananlab44"
+    },
+    {
+        "customer_name": "prod-cp-us-2-lab207-c21",
+        "login_page": "https://prod-cp-us-2-lab207-c21.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "21",
+        "admin_user": "user1@avananlab207.onmicrosoft.com",
+        "password": "7cp$GogI3zY1o7s0Y4}95,dN6_e",
+        "tenant": "avananlab207"
+    },
+    {
+        "customer_name": "ob-cp-eu-2-auto33",
+        "login_page": "http://portal.checkpoint.com",
+        "farm_name": "mt-prod-cp-eu-2",
+        "cluster": "2",
+        "admin_user": "user1@avananauto33.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto33"
+    },
+    {
+        "customer_name": "ob-cp-us-2-auto27",
+        "login_page": "http://portal.checkpoint.com",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "5",
+        "admin_user": "user1@avananauto27.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto27"
+    },
+    {
+        "customer_name": "prod-3-48-cont-auto77",
+        "login_page": "https://prod-3-48-cont-auto77.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "48",
+        "admin_user": "user1@avananauto77.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto77"
+    },
+    {
+        "customer_name": "stage1411",
+        "login_page": "https://stage1411.checkpointcloudsec.com",
+        "farm_name": "mt-stage-cp-3",
+        "cluster": "7",
+        "admin_user": "user1@avananauto24.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto24"
+    },
+    {
+        "customer_name": "prod-cp-us-2-c22-cont-lab208",
+        "login_page": "https://prod-cp-us-2-c22-cont-lab208.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "22",
+        "admin_user": "user1@avananlab208.onmicrosoft.com",
+        "password": "B4a!Q<#pyY<:T14rH8>&OS5D%HR",
+        "tenant": "avananlab208"
+    },
+    {
+        "customer_name": "mt-prod-av-ca-2-c2-auto79",
+        "login_page": "https://mt-prod-av-ca-2-c2-auto79.avanan.net",
+        "farm_name": "mt-prod-av-ca-2",
+        "cluster": "2",
+        "admin_user": "user1@avananauto79.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto79"
+    },
+    {
+        "customer_name": "prod-cp-1-cont-lab45",
+        "login_page": "https://prod-cp-1-cont-lab45.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-1",
+        "cluster": "12",
+        "admin_user": "user1@avananlab45.onmicrosoft.com",
+        "password": "JK.6o%V>xXQq>!&7GiN90fzC",
+        "tenant": "avananlab45"
+    },
+    {
+        "customer_name": "cp-us-2-c23-cont-lab6",
+        "login_page": "https://cp-us-2-c23-cont-lab6.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "23",
+        "admin_user": "user1@avananlab6.onmicrosoft.com",
+        "password": "6kxA-+BbEp034)Np6ci}V1=8Bxz",
+        "tenant": "avananlab6"
+    },
+    {
+        "customer_name": "mt-prod-cp-eu-2-c8-avananlab26-4",
+        "login_page": "https://mt-prod-cp-eu-2-c8-avananlab26-4.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-eu-2",
+        "cluster": "8",
+        "admin_user": "user1@avananlab26.onmicrosoft.com",
+        "password": "OtQ0g[GvRJUrm8W?AMOa9DMR2.#",
+        "tenant": "avananlab26"
+    },
+    {
+        "customer_name": "cp3c14reg1703new",
+        "login_page": "https://cp3c14reg1703new.checkpointcloudsec.com",
+        "farm_name": "mt-stage-cp-3",
+        "cluster": "14",
+        "admin_user": "user1@avananauto4.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto4"
+    },
+    {
+        "customer_name": "prod-3-c32-auto37",
+        "login_page": "https://prod-3-c32-auto37.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "32",
+        "admin_user": "user1@avananauto37.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto37"
+    },
+    {
+        "customer_name": "cp-eu-2-9-cont-auto60",
+        "login_page": "https://cp-eu-2-9-cont-auto60.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-eu-2",
+        "cluster": "9",
+        "admin_user": "user1@avananauto60.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto60"
+    },
+    {
+        "customer_name": "cpaucl7contlab8",
+        "login_page": "https://cpaucl7contlab8.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-au-4",
+        "cluster": "7",
+        "admin_user": "user1@avananlab8.onmicrosoft.com",
+        "password": "(2#zaWr;y@UX}0i45$Nxb",
+        "tenant": "avananlab8"
+    },
+    {
+        "customer_name": "prod-3-con-lab44",
+        "login_page": "https://prod-3-con-lab44.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "Farm",
+        "admin_user": "user1@avananlab44.onmicrosoft.com",
+        "password": "pRx8raCeTukN;K!w*@:%G<",
+        "tenant": "avananlab44"
+    },
+    {
+        "customer_name": "auto-lab5",
+        "login_page": null,
+        "farm_name": "mt-lab-31",
+        "cluster": "1",
+        "admin_user": "user1@avananlab5.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab5"
+    },
+    {
+        "customer_name": "prodcpus6contauto32",
+        "login_page": "https://prodcpus6contauto32.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "6",
+        "admin_user": "user1@avananauto32.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto32"
+    },
+    {
+        "customer_name": "prodcp1contlab51",
+        "login_page": "https://prodcp1contlab51.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-1",
+        "cluster": "10",
+        "admin_user": "user1@avananlab51.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab51"
+    },
+    {
+        "customer_name": "prod-3-cont-auto3-4",
+        "login_page": "https://prod-3-cont-auto3-4.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "22",
+        "admin_user": "user1@avananauto3.onmicrosoft.com",
+        "password": "dgc,+t4?v_A@aeCPs#3KQ<",
+        "tenant": "avananauto3"
+    },
+    {
+        "customer_name": "simulation-stage-sw-cont",
+        "login_page": "https://simulation-stage-sw-cont.sonicwallcloudsec.com/new.html#!/auth/login",
+        "farm_name": "mt-stage-sw-1",
+        "cluster": "1",
+        "admin_user": "user1@avananlab29.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab29"
+    },
+    {
+        "customer_name": "prod-av-cont-auto21",
+        "login_page": "https://prod-av-cont-auto21.avanan.net",
+        "farm_name": "mt-prod-av-1",
+        "cluster": "11",
+        "admin_user": "user1@avananauto21.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto21"
+    },
+    {
+        "customer_name": "releaser-prod-3-cont-lab7",
+        "login_page": "https://releaser-prod-3-cont-lab7.avanan.net/",
+        "farm_name": "mt-prod-3",
+        "cluster": "34-Releaser",
+        "admin_user": "user1@avananlab7.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab7"
+    },
+    {
+        "customer_name": "prod-av-1-cont-auto6",
+        "login_page": "https://prod-av-1-cont-auto6.avanan.net",
+        "farm_name": "mt-prod-av-1",
+        "cluster": "8",
+        "admin_user": "user1@avananauto6.onmicrosoft.com",
+        "password": "fk5ct8(9%Q|*RF4:>pG0rFUs",
+        "tenant": "avananauto6"
+    },
+    {
+        "customer_name": "boazg-rnd",
+        "login_page": "https://boazg-rnd.avanan-dev.net",
+        "farm_name": "mt-rnd-1",
+        "cluster": "1",
+        "admin_user": "user1@avananlab39.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab39"
+    },
+    {
+        "customer_name": "prod-3-43-cont-avananlab19",
+        "login_page": "https://prod-3-43-cont-avananlab19.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "43",
+        "admin_user": "user1@avananlab19.onmicrosoft.com",
+        "password": "vY;Db*jy)<=wk9#g@Brdz&",
+        "tenant": "avananlab19"
+    },
+    {
+        "customer_name": "prodcpau4cona52",
+        "login_page": "https://prodcpau4cona52.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-au-4",
+        "cluster": "1",
+        "admin_user": "user1@avananauto5.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto5"
+    },
+    {
+        "customer_name": "mt-prod-cp-mec1-1-cont-auto41",
+        "login_page": "http://portal.checkpoint.com",
+        "farm_name": "mt-prod-cp-mec1-1",
+        "cluster": "1",
+        "admin_user": "user1@avananauto41.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto41"
+    },
+    {
+        "customer_name": "cp-us-2-c18-cont-lab206",
+        "login_page": "https://cp-us-2-c18-cont-lab206.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "18",
+        "admin_user": "user1@avananlab206.onmicrosoft.com",
+        "password": "B?}9LK>H4E(F>rKqv06Kp-nKC5=",
+        "tenant": "avananlab206"
+    },
+    {
+        "customer_name": "prod-3-34-cont-auto45",
+        "login_page": "https://prod-3-34-cont-auto45.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "34",
+        "admin_user": "user1@avananauto45.onmicrosoft.com",
+        "password": "DF7u9ba]q7C.;*czN3(HE$",
+        "tenant": "avananauto45"
+    },
+    {
+        "customer_name": "prod-cp-eu-1-cont-lab27",
+        "login_page": "https://prod-cp-eu-1-cont-lab27.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-eu-1",
+        "cluster": "farm",
+        "admin_user": "user1@avananlab27.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab27"
+    },
+    {
+        "customer_name": "prod-cp-aps1-1-cont-auto38-c1",
+        "login_page": "https://prod-cp-aps1-1-cont-auto38-c1.checkpointcloudsec.com/",
+        "farm_name": "mt-prod-cp-aps1-1",
+        "cluster": "1",
+        "admin_user": "user1@avananauto38.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto38"
+    },
+    {
+        "customer_name": "lab-54-auto9",
+        "login_page": "https://lab-54-auto9.avanan-dev.net",
+        "farm_name": "mt-lab-54",
+        "cluster": "1",
+        "admin_user": "user1@avananauto9.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto9"
+    },
+    {
+        "customer_name": "ahmad",
+        "login_page": null,
+        "farm_name": "mt-qa-1",
+        "cluster": "4",
+        "admin_user": "user1@avananauto19.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto19"
+    },
+    {
+        "customer_name": "smart-vault-qa-1-auto29",
+        "login_page": "https://smart-vault-qa-1-auto29.avanan.net",
+        "farm_name": "mt-qa-1",
+        "cluster": "4",
+        "admin_user": "user1@avananauto29.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto29"
+    },
+    {
+        "customer_name": "cpus2cl7auto34test1",
+        "login_page": "https://cpus2cl7auto34test1.checkpointcloudsec.com/",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "7",
+        "admin_user": "user1@avananauto34.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto34"
+    },
+    {
+        "customer_name": "cp-us-2-10-cont-auto46",
+        "login_page": "https://cp-us-2-10-cont-auto46.checkpointcloudsec.com/",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "10",
+        "admin_user": "user1@avananauto46.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto46"
+    },
+    {
+        "customer_name": "prod-3-con-lab32-2",
+        "login_page": "https://prod-3-con-lab32-2.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "15",
+        "admin_user": "user1@avananlab32.onmicrosoft.com",
+        "password": "NJ3*9A#rB>p+Vx8zU!mRKu",
+        "tenant": "avananlab32"
+    },
+    {
+        "customer_name": "prod-3-40-cont-lab29",
+        "login_page": "https://prod-3-40-cont-lab29.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "40",
+        "admin_user": "user1@avananlab29.onmicrosoft.com",
+        "password": "B7GYw@Dm.C7,v+Ncu5p2h?",
+        "tenant": "avananlab29"
+    },
+    {
+        "customer_name": "cp-us-2-9-cont-auto44",
+        "login_page": "https://cp-us-2-9-cont-auto44.checkpointcloudsec.com/",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "9",
+        "admin_user": "user1@avananauto44.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto44"
+    },
+    {
+        "customer_name": "mt-prod-cp-mec1-1-cont-auto41",
+        "login_page": "https://mtprodcpmec11contauto41.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-mec1-1",
+        "cluster": "1",
+        "admin_user": "user1@avananauto41.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto41"
+    },
+    {
+        "customer_name": "mt-prod-3-42-cont-auto29",
+        "login_page": "https://mt-prod-3-42-cont-auto29.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "42",
+        "admin_user": "user1@avananauto29.onmicrosoft.com",
+        "password": "b.n6maB-QV7GpH{;v[#d$8",
+        "tenant": "avananauto29"
+    },
+    {
+        "customer_name": "prod-av1-c12-cont-lab202",
+        "login_page": "https://prod-av1-c12-cont-lab202.avanan.net",
+        "farm_name": "mt-prod-av-1",
+        "cluster": "12",
+        "admin_user": "user1@avananlab202.onmicrosoft.com",
+        "password": "WdcK+9286ja7*:&TY7Vx}BSr",
+        "tenant": "avananlab202"
+    },
+    {
+        "customer_name": "glab18",
+        "login_page": null,
+        "farm_name": "mt-lab-31",
+        "cluster": "1",
+        "admin_user": null,
+        "password": null,
+        "tenant": null
+    },
+    {
+        "customer_name": "cpeu26contlab205",
+        "login_page": "https://cpeu26contlab205.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-eu-2",
+        "cluster": "6",
+        "admin_user": "user1@avananlab205.onmicrosoft.com",
+        "password": "o0AOC44+xKisMw~7CuK<J>u3p3h",
+        "tenant": "avananlab205"
+    },
+    {
+        "customer_name": "prod-3-c51-cont-lab98",
+        "login_page": "https://prod-3-c51-cont-lab98.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "51",
+        "admin_user": "user1@avananlab98.onmicrosoft.com",
+        "password": "j}YVbH$Fu;krwh5s&3=,y2",
+        "tenant": "avananlab98"
+    },
+    {
+        "customer_name": "cpus25contauto27",
+        "login_page": "https://cpus25contauto27.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "5",
+        "admin_user": "user1@avananauto27.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto27"
+    },
+    {
+        "customer_name": "prod-av-cont-al28-cl9",
+        "login_page": "https://prod-av-cont-al28-cl9.avanan.net",
+        "farm_name": "mt-prod-av-1",
+        "cluster": "9",
+        "admin_user": "user1@avananlab28.onmicrosoft.com",
+        "password": "za6+Q$;Oe4r~XF9y&U#o)wfc",
+        "tenant": "avananlab28"
+    },
+    {
+        "customer_name": "prod-cp-1-cont-lab46",
+        "login_page": "https://prod-cp-1-cont-lab46.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-1",
+        "cluster": "13",
+        "admin_user": "user1@avananlab46.onmicrosoft.com",
+        "password": "rpzcDW7ySvzY2pWhLN5Z62505",
+        "tenant": "avananlab46"
+    },
+    {
+        "customer_name": "prod-cp-eu-2-c12-cont-auto36",
+        "login_page": "https://prod-cp-eu-2-c12-cont-auto36.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-eu-2",
+        "cluster": "12",
+        "admin_user": "user1@avananauto36.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto36"
+    },
+    {
+        "customer_name": "mt-qa-1-avananauto90-1811-1",
+        "login_page": "https://mt-qa-1-avananauto90-1811-1.avanan.net",
+        "farm_name": "mt-qa-1",
+        "cluster": "4",
+        "admin_user": "user1@avananlab18.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab18"
+    },
+    {
+        "customer_name": "prod-cp-au-4-lab100-cont-c9",
+        "login_page": "https://prod-cp-au-4-lab100-cont-c9.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-au-4",
+        "cluster": "9",
+        "admin_user": "user1@avananlab100.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab100"
+    },
+    {
+        "customer_name": "Prod-3-c47-cont-auto83",
+        "login_page": "https://Prod-3-c47-cont-auto83.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "47",
+        "admin_user": "user1@avananauto83.onmicrosoft.com",
+        "password": "86G3XZD!BCQieYyx#nq)",
+        "tenant": "avananauto83"
+    },
+    {
+        "customer_name": "portal",
+        "login_page": "https://portal.avanan.net",
+        "farm_name": null,
+        "cluster": null,
+        "admin_user": null,
+        "password": null,
+        "tenant": null
+    },
+    {
+        "customer_name": "qa-1-cont-al18",
+        "login_page": "https://qa-1-cont-al18.avanan.net",
+        "farm_name": "mt-qa-1",
+        "cluster": "4",
+        "admin_user": "user1@avananlab18.onmicrosoft.com",
+        "password": "KM3;54%f</@rR6]L(E2k*D",
+        "tenant": "avananlab18"
+    },
+    {
+        "customer_name": "prodcpeu1contlab52vc1",
+        "login_page": "https://prodcpeu1contlab52vc1.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-eu-1",
+        "cluster": "3",
+        "admin_user": "user1@vc1.avanan-dev.net",
+        "password": "3o8ZE23OXXpyKrGtOcLzazaE",
+        "tenant": "vc1"
+    },
+    {
+        "customer_name": "https://cp-euw2-2-cont-auto75",
+        "login_page": "https://cp-euw2-2-cont-auto75.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-euw2-1",
+        "cluster": "2",
+        "admin_user": "user1@avananauto75.onmicrosoft.com",
+        "password": "H4=7LO@,gBZ8Va1nT>aq}{Ei+1p",
+        "tenant": "avananauto75"
+    },
+    {
+        "customer_name": "portal",
+        "login_page": "https://msp-qa.avanan.net",
+        "farm_name": null,
+        "cluster": null,
+        "admin_user": null,
+        "password": null,
+        "tenant": null
+    },
+    {
+        "customer_name": "prod-cp-1-cont-lab42",
+        "login_page": "https://prod-cp-1-cont-lab42.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-1",
+        "cluster": "9",
+        "admin_user": "user1@avananlab42.onmicrosoft.com",
+        "password": "C97WjE1C08GTsApJ4KZrNfKaO",
+        "tenant": "avananlab42"
+    },
+    {
+        "customer_name": "prod-3-con-lab35",
+        "login_page": "https://prod-3-con-lab35.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "3",
+        "admin_user": "user1@avananlab35.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab35"
+    },
+    {
+        "customer_name": "cpus25contauto27",
+        "login_page": "http://portal.checkpoint.com",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "5",
+        "admin_user": "user1@avananauto27.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto27"
+    },
+    {
+        "customer_name": "prd-sw-eu-2-autorel",
+        "login_page": "https://prd-sw-eu-2-autorel.sonicwallcloudsec.com",
+        "farm_name": "mt-prod-sw-eu-2",
+        "cluster": "3",
+        "admin_user": "user1@avananlabautorel.onmicrosoft.com",
+        "password": "59[d0Zlp:}F85PVzCH1wx=2[e0",
+        "tenant": "avananlabautorel"
+    },
+    {
+        "customer_name": "prod-3-cont-lab101-1",
+        "login_page": "https://prod-3-cont-lab101-1.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "29",
+        "admin_user": "user1@avananlab101.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab101"
+    },
+    {
+        "customer_name": "prod-3-con-lab48",
+        "login_page": "https://prod-3-con-lab48.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "20",
+        "admin_user": "user1@avananlab48.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab48"
+    },
+    {
+        "customer_name": "mt-prod-3-44-cont-avananauto62-new",
+        "login_page": "https://mt-prod-3-44-cont-avananauto62-new.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "44",
+        "admin_user": "user1@avananauto62.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto62"
+    },
+    {
+        "customer_name": "ui-dev2",
+        "login_page": "https://ui-dev2.avanan-dev.net",
+        "farm_name": "mt-rnd-1",
+        "cluster": "1",
+        "admin_user": "user1@avananlab30.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab30"
+    },
+    {
+        "customer_name": "qa-1-py3",
+        "login_page": "https://qa-1-py3.avanan.net",
+        "farm_name": "mt-qa-1",
+        "cluster": "6",
+        "admin_user": "user1@avananlab31.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab31"
+    },
+    {
+        "customer_name": "mt-prod-cp-eu-2-7-auto58",
+        "login_page": "https://mt-prod-cp-eu-2-7-auto58.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-eu-2",
+        "cluster": "7",
+        "admin_user": "user1@avananauto58.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto58"
+    },
+    {
+        "customer_name": "mt-prod-cp-aps1-1-lab203-cont",
+        "login_page": "https://mt-prod-cp-aps1-1-lab203-cont.checkpointcloudsec.com/",
+        "farm_name": "mt-prod-cp-aps1-1",
+        "cluster": "2",
+        "admin_user": "user1@avananlab203.onmicrosoft.com",
+        "password": "4wV?9?O1Q#G@hCDvS3g%U4*+++Ae",
+        "tenant": "avananlab203"
+    },
+    {
+        "customer_name": "prod-cp-1-cont-aviav",
+        "login_page": "https://prod-cp-1-cont-aviav.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-1",
+        "cluster": "15",
+        "admin_user": "user1@aviavanan.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "aviavanan"
+    },
+    {
+        "customer_name": "prod-cp-1-eu-c3",
+        "login_page": "http://portal.checkpoint.com",
+        "farm_name": "mt-prod-cp-eu-1",
+        "cluster": "3",
+        "admin_user": null,
+        "password": null,
+        "tenant": null
+    },
+    {
+        "customer_name": "prod-3-41-cont-auto53",
+        "login_page": "https://prod-3-41-cont-auto53.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "41",
+        "admin_user": "user1@avananauto53.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto53"
+    },
+    {
+        "customer_name": "ob-cp-eu-2-auto33",
+        "login_page": "http://portal.checkpoint.com",
+        "farm_name": "mt-prod-cp-eu-2",
+        "cluster": "2",
+        "admin_user": "user1@avananauto33.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto33"
+    },
+    {
+        "customer_name": "prod-cp-eu-1-cont-lab27",
+        "login_page": "https://prod-cp-eu-1-cont-lab27.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-eu-1",
+        "cluster": "1",
+        "admin_user": "user1@avananlab27.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab27"
+    },
+    {
+        "customer_name": "mt-prod-av-ca-2-rules-test",
+        "login_page": null,
+        "farm_name": "mt-prod-av-ca-2",
+        "cluster": null,
+        "admin_user": null,
+        "password": null,
+        "tenant": null
+    },
+    {
+        "customer_name": "cp-us-2-16-cont-auto61",
+        "login_page": "https://cp-us-2-16-cont-auto61.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "16",
+        "admin_user": "user1@avananauto61.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto61"
+    },
+    {
+        "customer_name": "qa-cl7-flask-py3",
+        "login_page": "https://qa-cl7-flask-py3.avanan.net",
+        "farm_name": "mt-qa-1",
+        "cluster": "7",
+        "admin_user": "user1@avananauto88.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto88"
+    },
+    {
+        "customer_name": "prod-cp-1-cont-auto8",
+        "login_page": "https://prod-cp-1-cont-auto8.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-1",
+        "cluster": "14",
+        "admin_user": "user1@avananauto8.onmicrosoft.com",
+        "password": "1itAa6DaEnYz68kGetuEF9a2s",
+        "tenant": "avananauto8"
+    },
+    {
+        "customer_name": "mt-qa-1-con-al22",
+        "login_page": "https://mt-qa-1-con-al22.avanan.net/#!/auth/login",
+        "farm_name": "mt-qa-1",
+        "cluster": "11",
+        "admin_user": "user1@avananlab22.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab22"
+    },
+    {
+        "customer_name": "prod-3-con-lab38",
+        "login_page": "https://prod-3-con-lab38.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "19",
+        "admin_user": "user1@avananlab38.onmicrosoft.com",
+        "password": "QWMkgZ?q_cBK*Yw]RJj74h",
+        "tenant": "avananlab38"
+    },
+    {
+        "customer_name": "prod-3-con-lab36",
+        "login_page": "https://prod-3-con-lab36.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "12",
+        "admin_user": "user1@avananlab36.onmicrosoft.com",
+        "password": "HM}fY8JPZrk~asB]59;Qp3",
+        "tenant": "avananlab36"
+    },
+    {
+        "customer_name": "qa-1-cont-auto22",
+        "login_page": "https://qa-1-cont-auto22.avanan.net",
+        "farm_name": "mt-qa-1",
+        "cluster": "4",
+        "admin_user": "user1@avananauto22.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto22"
+    },
+    {
+        "customer_name": "cp-us-2-glab16-2101-a",
+        "login_page": "https://cp-us-2-glab16-2101-a.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "1",
+        "admin_user": "user1@avananauto13.onmicrosoft.com",
+        "password": "k3MpAGCiMIOA8F5b9CIHz1k9",
+        "tenant": "avananauto13"
+    },
+    {
+        "customer_name": "suspend-release-tenant-qa-1",
+        "login_page": "https://suspend-release-tenant-qa-1.avanan.net",
+        "farm_name": "mt-qa-1",
+        "cluster": null,
+        "admin_user": null,
+        "password": null,
+        "tenant": null
+    },
+    {
+        "customer_name": "prod-3-cl-28-cont-lab200",
+        "login_page": "https://prod-3-cl-28-cont-lab200.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "28",
+        "admin_user": "user1@avananlab200.onmicrosoft.com",
+        "password": "yn<N6mA_/r]Wa9{k.w(CB[",
+        "tenant": "avananlab200"
+    },
+    {
+        "customer_name": "av-ca-2-labauto3-conti",
+        "login_page": "https://av-ca-2-labauto3-conti.avanan.net",
+        "farm_name": "mt-prod-av-ca-2",
+        "cluster": "1",
+        "admin_user": "user1@avananlabauto3.onmicrosoft.com",
+        "password": "5-|wpLeHpT<$>i1w11N+&oby",
+        "tenant": "avananlabauto3"
+    },
+    {
+        "customer_name": "prod-3-cont-lab1-c27",
+        "login_page": "https://prod-3-cont-lab1-c27.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "27",
+        "admin_user": "user1@avananlab1.onmicrosoft.com",
+        "password": "n!FY-8w2,JB!qvj#)P:SVg",
+        "tenant": "avananlab1"
+    },
+    {
+        "customer_name": "prod-cp-1-cont-lab41",
+        "login_page": "https://prod-cp-1-cont-lab41.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-1",
+        "cluster": "17",
+        "admin_user": "user1@avananlab41.onmicrosoft.com",
+        "password": "G0AoN6WLJ2RHpXI3EB6Vie9d",
+        "tenant": "avananlab41"
+    },
+    {
+        "customer_name": "stage1411",
+        "login_page": "https://stage1411.checkpointcloudsec.com",
+        "farm_name": "mt-stage-cp-3",
+        "cluster": "7",
+        "admin_user": "user1@avananauto24.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto24"
+    },
+    {
+        "customer_name": "ahmad",
+        "login_page": null,
+        "farm_name": "mt-qa-1",
+        "cluster": "4",
+        "admin_user": null,
+        "password": null,
+        "tenant": null
+    },
+    {
+        "customer_name": "mt-prod-3-52-cont-lab209",
+        "login_page": "https://mt-prod-3-52-cont-lab209.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "52",
+        "admin_user": "user1@avananlab209.onmicrosoft.com",
+        "password": "k7V73Y9*Kg=x@S>Eqy;B6.",
+        "tenant": "avananlab209"
+    },
+    {
+        "customer_name": "lab-31-a10",
+        "login_page": "https://lab-31-a10.avanan-dev.net",
+        "farm_name": "mt-lab-31",
+        "cluster": "1",
+        "admin_user": "user1@avananauto10.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto10"
+    },
+    {
+        "customer_name": "prod-cp-us-2-8-auto40-cont",
+        "login_page": "https://prod-cp-us-2-8-auto40-cont.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "8",
+        "admin_user": "user1@avananauto40.onmicrosoft.com",
+        "password": "$7YQ6[2{s%0eu&J5nE8CR2p:2n",
+        "tenant": "avananauto40"
+    },
+    {
+        "customer_name": "prod-3-con-lab37",
+        "login_page": "https://prod-3-con-lab37.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "13",
+        "admin_user": "user1@avananlab37.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab37"
+    },
+    {
+        "customer_name": "cp-us-2-c19-cont-lab17",
+        "login_page": "https://cp-us-2-c19-cont-lab17.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "19",
+        "admin_user": "user1@avananlab17.onmicrosoft.com",
+        "password": "7k0I14CCbsWKE3QJv279[]#j1U6SHF",
+        "tenant": "avananlab17"
+    },
+    {
+        "customer_name": "cp-eu-2-4-cont-auto50",
+        "login_page": "https://cp-eu-2-4-cont-auto50.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-eu-2",
+        "cluster": "4",
+        "admin_user": "user1@avananauto50.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto50"
+    },
+    {
+        "customer_name": "prod-3-46-auto69-cont",
+        "login_page": "https://prod-3-46-auto69-cont.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "46",
+        "admin_user": "user1@avananauto69.onmicrosoft.com",
+        "password": "WAj}VH4Q.DXNc]a2?hG$C7",
+        "tenant": "avananauto69"
+    },
+    {
+        "customer_name": "eu2cl5auto26",
+        "login_page": "https://eu2cl5auto26.checkpointcloudsec.com/",
+        "farm_name": "mt-prod-cp-eu-2",
+        "cluster": "5",
+        "admin_user": "user1@avananauto26.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto26"
+    },
+    {
+        "customer_name": "prod-cp-1-cont-lab41",
+        "login_page": "https://prod-cp-1-cont-lab41.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-1",
+        "cluster": "Farm",
+        "admin_user": "user1@avananlab41.onmicrosoft.com",
+        "password": "G0AoN6WLJ2RHpXI3EB6Vie9d",
+        "tenant": "avananlab41"
+    },
+    {
+        "customer_name": "cp-eu-2-11-cont-lab65",
+        "login_page": "https://cp-eu-2-11-cont-lab65.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-eu-2",
+        "cluster": "11",
+        "admin_user": "user1@avananlab65.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab65"
+    },
+    {
+        "customer_name": "prod-cp-us-2-auto73-c20",
+        "login_page": "https://prod-cp-us-2-auto73-c20.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "20",
+        "admin_user": "user1@avananauto73.onmicrosoft.com",
+        "password": "@fiwM.%nd1E14[ijvVO@+0Dc?sd",
+        "tenant": "avananauto73"
+    },
+    {
+        "customer_name": "stagelab21",
+        "login_page": "http://q.portal.checkpoint.com",
+        "farm_name": "mt-stage-cp-3",
+        "cluster": "7",
+        "admin_user": "user1@avananlab21.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab21"
+    },
+    {
+        "customer_name": "releaserprodcpauauto56",
+        "login_page": "https://releaserprodcpauauto56.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-au-4",
+        "cluster": "7-Releaser",
+        "admin_user": "user1@avananauto56.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto56"
+    },
+    {
+        "customer_name": "mt-prod-3",
+        "login_page": null,
+        "farm_name": null,
+        "cluster": null,
+        "admin_user": "user1@avananlab4.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab4"
+    },
+    {
+        "customer_name": "mt-stage-sw-1-rules-test",
+        "login_page": null,
+        "farm_name": "mt-stage-sw-1",
+        "cluster": null,
+        "admin_user": null,
+        "password": null,
+        "tenant": null
+    },
+    {
+        "customer_name": "prod-3-cont-auto3-4",
+        "login_page": "https://prod-3-cont-auto3-4.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "22",
+        "admin_user": "user1@avananauto3.onmicrosoft.com",
+        "password": "dgc,+t4?v_A@aeCPs#3KQ<",
+        "tenant": "avananauto3"
+    },
+    {
+        "customer_name": "prod-cp-eu-2-cont-auto17",
+        "login_page": "https://prod-cp-eu-2-cont-auto17.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-eu-2",
+        "cluster": "1",
+        "admin_user": "user1@avananauto17.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto17"
+    },
+    {
+        "customer_name": "cpeu22contauto33",
+        "login_page": "http://portal.checkpoint.com",
+        "farm_name": "mt-prod-cp-eu-2",
+        "cluster": "2",
+        "admin_user": "user1@avananauto33.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto33"
+    },
+    {
+        "customer_name": "releaserprodcpaps1auto57",
+        "login_page": "https://releaserprodcpaps1auto57.checkpointcloudsec.com/",
+        "farm_name": "mt-prod-cp-aps1-1",
+        "cluster": "1-Releaser",
+        "admin_user": "user1@avananauto57.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto57"
+    },
+    {
+        "customer_name": "login-logout-verification",
+        "login_page": "http://portal.checkpoint.com",
+        "farm_name": "mt-prod-cp-1",
+        "cluster": "17",
+        "admin_user": null,
+        "password": null,
+        "tenant": null
+    },
+    {
+        "customer_name": "releaser-mt-prod-av-1-auto54",
+        "login_page": "https://releaser-mt-prod-av-1-auto54.avanan.net/",
+        "farm_name": "mt-prod-av-1",
+        "cluster": "11-Releaser",
+        "admin_user": "user1@avananauto54.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto54"
+    },
+    {
+        "customer_name": "ahmad",
+        "login_page": null,
+        "farm_name": "mt-qa-1",
+        "cluster": "4",
+        "admin_user": null,
+        "password": null,
+        "tenant": null
+    },
+    {
+        "customer_name": "avananlab13",
+        "login_page": "https://avananlab13.avanan-dev.net",
+        "farm_name": "mt-lab-31",
+        "cluster": null,
+        "admin_user": null,
+        "password": null,
+        "tenant": null
+    },
+    {
+        "customer_name": "cp-us-2-15-cont-auto49",
+        "login_page": "https://cp-us-2-15-cont-auto49.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "15",
+        "admin_user": "user1@avananauto49.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto49"
+    },
+    {
+        "customer_name": "prod-cp-au-4-lab25-cont-8",
+        "login_page": "https://prod-cp-au-4-lab25-cont-8.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-au-4",
+        "cluster": "8",
+        "admin_user": "user1@avananlab25.onmicrosoft.com",
+        "password": "lQ-!w-0I5x*b?:KiVk|){[>fev9",
+        "tenant": "avananlab25"
+    },
+    {
+        "customer_name": "ui-dev",
+        "login_page": "https://ui-dev.avanan-dev.net",
+        "farm_name": "mt-rnd-1",
+        "cluster": "1",
+        "admin_user": "user1@avananlab30.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab30"
+    },
+    {
+        "customer_name": "cp-us-2-14-cont-auto59",
+        "login_page": "https://cp-us-2-14-cont-auto59.checkpointcloudsec.com/",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "14",
+        "admin_user": "user1@avananauto59.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto59"
+    },
+    {
+        "customer_name": "prod-3-con-lab33",
+        "login_page": "https://prod-3-con-lab33.avanan.net",
+        "farm_name": "mt-prod-3",
+        "cluster": "16",
+        "admin_user": "user1@avananlab33.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananlab33"
+    },
+    {
+        "customer_name": "prod-cp-1-cont-lab47",
+        "login_page": "https://prod-cp-1-cont-lab47.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-1",
+        "cluster": "16",
+        "admin_user": "user1@avananlab47.onmicrosoft.com",
+        "password": "5GTTrLOuYdD714E3iT8a8jQu",
+        "tenant": "avananlab47"
+    },
+    {
+        "customer_name": "cp-us-2-12-cont-labcarlo",
+        "login_page": "https://cp-us-2-12-cont-labcarlo.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-us-2",
+        "cluster": "12",
+        "admin_user": "user1@avananlabcarlo.onmicrosoft.com",
+        "password": "h+XoDEDR(=Z1w2E=ZM*<]472[=",
+        "tenant": "avananlabcarlo"
+    },
+    {
+        "customer_name": "prod-cp-aps1-1-cont-lab204-c4",
+        "login_page": "https://prod-cp-aps1-1-cont-lab204-c4.checkpointcloudsec.com/",
+        "farm_name": "mt-prod-cp-aps1-1",
+        "cluster": "4",
+        "admin_user": "user1@avananlab204.onmicrosoft.com",
+        "password": "7dh(GMm)6]E~}h:]s)ru57wFcj*",
+        "tenant": "avananlab204"
+    },
+    {
+        "customer_name": "prod-3-c49-cont-auto85",
+        "login_page": "https://prod-3-c49-cont-auto85.avanan.net/",
+        "farm_name": "mt-prod-3",
+        "cluster": "49",
+        "admin_user": "user1@avananauto85.onmicrosoft.com",
+        "password": "N9+MY6iV1sAo>Y1ebNR2uL",
+        "tenant": "avananauto85"
+    },
+    {
+        "customer_name": "prodcp1lab22cont",
+        "login_page": "https://prodcp1lab22cont.checkpointcloudsec.com",
+        "farm_name": "mt-prod-cp-1",
+        "cluster": "11",
+        "admin_user": "user1@avananlab22.onmicrosoft.com",
+        "password": "uzEgVc8U1w0Zcwdi5BV73uxAq",
+        "tenant": "avananlab22"
+    },
+    {
+        "customer_name": "ahmad",
+        "login_page": null,
+        "farm_name": "mt-qa-1",
+        "cluster": "4",
+        "admin_user": "user1@avananauto19.onmicrosoft.com",
+        "password": "AvananO365_!@#",
+        "tenant": "avananauto19"
+    }
+];
+
+        // Function to perform search
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const resultsContainer = document.getElementById('results');
+
+            // Clear previous results
+            resultsContainer.innerHTML = '';
+
+            if (query === '') {
+                resultsContainer.innerHTML = '<p class="no-results">Please enter a search term.</p>';
+                return;
+            }
+
+            // Filter data based on query
+            const filteredData = data.filter(item => {
+                return Object.values(item).some(value =>
+                    value && value.toString().toLowerCase().includes(query)
+                );
+            });
+
+            if (filteredData.length > 0) {
+                // Display results
+                filteredData.forEach((item, index) => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'result-item';
+
+                    let itemContent = `<h3>${item.customer_name || 'N/A'}</h3>`;
+                    for (const [key, value] of Object.entries(item)) {
+                        if (key !== 'customer_name') {
+                            if (key === 'password') {
+                                itemContent += `
+                                    <p class="password-field">
+                                        <strong>${formatKey(key)}:</strong>
+                                        <span id="password-${index}" class="password-mask">********</span>
+                                        <button class="toggle-password" onclick="togglePassword(${index}, '${encodeURIComponent(value)}')">Show Password</button>
+                                    </p>
+                                `;
+                            } else {
+                                itemContent += `<p><strong>${formatKey(key)}:</strong> ${
+                                    key === 'login_page' && value
+                                        ? `<a href="${value}" target="_blank">${value}</a>`
+                                        : value || 'N/A'
+                                }</p>`;
+                            }
+                        }
+                    }
+
+                    resultItem.innerHTML = itemContent;
+                    resultsContainer.appendChild(resultItem);
+                });
+            } else {
+                // No results found
+                resultsContainer.innerHTML = '<p class="no-results">No results found.</p>';
+            }
+        }
+
+        // Helper function to format keys to more readable text
+        function formatKey(key) {
+            return key
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, char => char.toUpperCase());
+        }
+
+        // Function to set the search term and trigger the search
+        function setSearchTerm(term) {
+            document.getElementById('searchInput').value = term;
+            performSearch();
+        }
+
+        // Function to toggle password visibility
+        function togglePassword(index, encodedPasswordValue) {
+            const passwordSpan = document.getElementById(`password-${index}`);
+            const passwordValue = decodeURIComponent(encodedPasswordValue);
+            const toggleButton = passwordSpan.nextElementSibling;
+
+            if (passwordSpan.textContent === '********') {
+                passwordSpan.textContent = passwordValue;
+                toggleButton.textContent = 'Hide Password';
+            } else {
+                passwordSpan.textContent = '********';
+                toggleButton.textContent = 'Show Password';
+            }
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    </script>
+</body>
+</html>
