@@ -16,21 +16,20 @@ DOWNLOAD_DIR = "/home/ubuntu/BDD/Dash/static/downloaded-reports"
 # Virtual environment Python
 VENV_PYTHON = "/home/ubuntu/BDD/Dash/venv/bin/python3"
 
-# BDD Tests data (unchanged from your code)
+# BDD Tests data
 with open('bdd_tests.json', 'r') as file:
     BDD_TESTS = json.load(file)
 
-# Test data for farm status
+# Test data (farm status)
 DATA_JSON_PATH = os.path.join('static', 'data.json')
 
 @app.route('/')
 def index():
-    # Render our updated dashboard.html with the hidden 5-click logic
+    # Main dashboard page with hidden 5-click logic
     return render_template('dashboard.html')
 
 @app.route('/download/<string:filename>', methods=['GET'])
 def download_report(filename):
-    # Same logic you had for S3 downloads
     file_path = os.path.join(DOWNLOAD_DIR, filename)
     if os.path.exists(file_path):
         return send_from_directory(DOWNLOAD_DIR, filename)
@@ -53,7 +52,6 @@ def bdd_search():
 def search_bdd():
     query = request.args.get('query', '').lower()
     matching_tests = []
-
     pattern = re.compile(re.escape(query), re.IGNORECASE)
     for test in BDD_TESTS:
         full_test_text = " ".join(test["steps"]).lower()
@@ -66,33 +64,26 @@ def search_bdd():
                     escaped_step
                 )
                 highlighted_steps.append(highlighted_step)
-
             escaped_examples = {}
             for key, values in test["examples"].items():
                 escaped_values = [html.escape(str(value)) for value in values]
                 escaped_examples[key] = escaped_values
-
             matching_tests.append({
                 "highlighted_steps": highlighted_steps,
                 "examples": escaped_examples
             })
-
     return jsonify(matching_tests)
 
 @app.route('/farm_status', methods=['GET'])
 def farm_status():
-    # Load data.json
     with open(DATA_JSON_PATH) as f:
         data = json.load(f)
-
-    # Extract farm names
     farm_names = set()
     for test_group in data.values():
         for test in test_group:
             filename = test['filename']
             farm_name = filename.split('_')[0]
             farm_names.add(farm_name)
-
     farm_names = sorted(farm_names)
     return render_template('farm_status.html', farm_names=farm_names)
 
@@ -101,10 +92,8 @@ def get_farm_data():
     farm_name = request.args.get('farm')
     if not farm_name:
         return jsonify({'error': 'No farm specified'}), 400
-
     with open(DATA_JSON_PATH) as f:
         data = json.load(f)
-
     farm_data = []
     for test_group in data.values():
         for test in test_group:
@@ -112,7 +101,6 @@ def get_farm_data():
             test_farm_name = filename.split('_')[0]
             if test_farm_name == farm_name:
                 farm_data.append(test)
-
     return jsonify(farm_data)
 
 @app.route('/customers', methods=['GET'])
@@ -125,9 +113,10 @@ def integration():
 @app.route('/download_bdd_ahz', methods=['GET'])
 def download_bdd_ahz():
     # Directory to zip
-    base_path = "/home/ubuntu/BDD/"  # Adjust if needed
+    base_path = "/home/ubuntu/BDD/Dash/ahz"  # Adjust if needed
 
     # Create an in-memory ZIP
+    import io
     memory_file = io.BytesIO()
     with zipfile.ZipFile(memory_file, 'w', zipfile.ZIP_DEFLATED) as zf:
         for root, dirs, files in os.walk(base_path):
@@ -145,5 +134,4 @@ def download_bdd_ahz():
     )
 
 if __name__ == '__main__':
-    # Run on 0.0.0.0:8000 with debug for local dev
     app.run(debug=True, port=8000, host='0.0.0.0')

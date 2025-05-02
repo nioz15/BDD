@@ -4,37 +4,30 @@
     <meta charset="UTF-8">
     <title>Farm Status</title>
 
-    <link rel="icon"
-      type="image/png"
-        href="{{ url_for('static', filename='img/22671') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/22671') }}">
 
-    <!-- Responsive Meta Tag -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Include Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <!-- Include Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Link to the Stylesheet -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <!-- Include Font Awesome via CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Custom Styles (Inline) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
     <style>
         :root {
-            /* Light Mode Colors */
+            /* Light Mode */
             --background-color-light: #ffffff;
             --text-color-light: #333333;
             --navbar-background-light: #f8f9fa;
             --navbar-text-color-light: #333333;
 
-            /* Dark Mode Colors */
+            /* Dark Mode */
             --background-color-dark: #242526;
             --text-color-dark: #e8e6e3;
             --navbar-background-dark: #18191a;
             --navbar-text-color-dark: #e8e6e3;
 
-            /* Additional Colors */
+            /* Extra Colors */
             --button-background: #007bff;
             --button-text-color: #ffffff;
             --status-passed-color: #3cb44b; /* Green */
@@ -49,16 +42,12 @@
             color: var(--text-color);
             transition: background-color 0.3s, color 0.3s;
         }
-
-        /* Light mode sets these CSS variables */
         body[data-theme='light'] {
             --background-color: var(--background-color-light);
             --text-color: var(--text-color-light);
             --navbar-background: var(--navbar-background-light);
             --navbar-text-color: var(--navbar-text-color-light);
         }
-
-        /* Dark mode sets these CSS variables */
         body[data-theme='dark'] {
             --background-color: var(--background-color-dark);
             --text-color: var(--text-color-dark);
@@ -66,6 +55,7 @@
             --navbar-text-color: var(--navbar-text-color-dark);
         }
 
+        /* Navbar */
         .navbar {
             background-color: var(--navbar-background);
             color: var(--navbar-text-color);
@@ -78,17 +68,14 @@
             align-items: center;
             justify-content: space-between;
         }
-
         .navbar-brand a {
             text-decoration: none;
             font-size: 24px;
             color: var(--navbar-text-color);
         }
-
         .navbar-brand span {
             color: var(--status-failed-color);
         }
-
         .navbar-content {
             display: flex;
             align-items: center;
@@ -96,7 +83,7 @@
             width: 100%;
         }
 
-        /* Two-button theme toggle */
+        /* Theme toggle */
         .theme-mode-toggle {
             display: inline-flex;
             align-items: center;
@@ -106,7 +93,6 @@
             position: relative;
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
         }
-
         .theme-mode-toggle .toggle-option {
             flex: 1 1 auto;
             display: inline-flex;
@@ -121,93 +107,171 @@
             cursor: pointer;
             transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
         }
-
         .theme-mode-toggle .toggle-option i {
             margin-right: 4px;
             font-size: 0.75rem;
         }
-
         .theme-mode-toggle .toggle-option.active {
             background-color: #ffffff;
             color: #212529;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-
         .theme-mode-toggle .toggle-option:hover {
             background-color: #f8f9fa;
         }
 
+        /* Header */
         .header-container {
             text-align: center;
             padding: 20px;
         }
-
         .header-container h1 {
             margin-bottom: 10px;
             font-size: 36px;
         }
-
         .header-container p {
             font-size: 18px;
         }
 
+        /* Info icon tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 320px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            text-align: left;
+            padding: 8px;
+            border-radius: 6px;
+            position: absolute;
+            z-index: 9999;
+            top: 50%;
+            left: 105%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Chart Container */
         .chart-container {
             width: 80%;
             margin: 0 auto;
             padding-top: 50px;
             position: relative;
-            height: 500px; /* Adjust as needed */
+            height: 500px;
         }
-
-        .farm-selection {
+        /* Chart Status Message (loading, error, no data) */
+        .chart-status-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            color: var(--text-color);
             text-align: center;
-            margin-bottom: 30px;
+        }
+        .chart-status-message.hidden {
+            display: none;
         }
 
-        .farm-selection label {
-            margin-right: 10px;
-            font-weight: bold;
+        /* Loader */
+        .chart-loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.8); /* semi-transparent white background for light mode */
+            opacity: 1; /* Initially visible when not hidden */
+            transition: opacity 0.3s;
+            z-index: 10; /* Ensure it's on top of the chart */
+            pointer-events: none; /* Allow clicks to pass through */
+        }
+        body[data-theme='dark'] .chart-loader {
+            background-color: rgba(0, 0, 0, 0.8); /* semi-transparent black for dark mode */
+        }
+        .chart-loader.hidden {
+            opacity: 0;
+            pointer-events: none; /* Ensure it's completely hidden and doesn't block interaction */
         }
 
-        .farm-selection select {
-            width: 200px;
-            height: 35px;
-            padding: 5px;
+        .loader-spinner {
+            border: 8px solid #f3f3f3; /* Light grey border */
+            border-top: 8px solid var(--button-background); /* Theme color top border */
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1.2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+
+        /* External tooltip: fixed near top-right of page (NOT inside chart) */
+        .chartjs-external-tooltip {
+            position: fixed; /* changed from absolute to fixed */
+            top: 20px;       /* pinned higher so it doesn't overlap lines */
+            right: 20px;
+            left: auto;
+            pointer-events: none;
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 8px 12px;
             border-radius: 4px;
-            border: 1px solid #ccc;
+            opacity: 0; /* hidden by default */
+            transition: opacity 0.2s ease;
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.9rem;
+            z-index: 9999;
         }
 
+        /* Farm selection / toggles */
+        .farm-selection,
+        .line-toggles {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .line-toggles label {
+            margin-right: 10px;
+        }
+
+        /* Footer */
         footer.signature {
             text-align: center;
             padding: 10px;
             background-color: var(--navbar-background);
             color: var(--navbar-text-color);
-            position: relative;
         }
     </style>
 </head>
-<body>
-    <!-- Navbar -->
+<body data-theme="light">
     <nav class="navbar">
         <div class="navbar-content">
             <div class="navbar-brand">
                 <a href="{{ url_for('index') }}">Automation<span>Dashboard</span></a>
             </div>
-            <!-- Replace the old slider switch with the two-button theme toggle -->
             <div class="theme-mode-toggle" aria-label="Theme Toggle">
-                <button 
-                  id="lightModeBtn" 
-                  class="toggle-option active" 
-                  title="Activate Light Mode"
-                >
+                <button id="lightModeBtn" class="toggle-option active" title="Activate Light Mode">
                     <i class="fas fa-sun"></i>
                     <span>Light Mode</span>
                 </button>
-                <button 
-                  id="darkModeBtn" 
-                  class="toggle-option" 
-                  title="Activate Dark Mode"
-                >
+                <button id="darkModeBtn" class="toggle-option" title="Activate Dark Mode">
                     <i class="fas fa-moon"></i>
                     <span>Dark Mode</span>
                 </button>
@@ -216,13 +280,21 @@
         </div>
     </nav>
 
-    <!-- Header Container -->
     <div class="header-container">
-        <h1>Farm Status</h1>
+        <h1>
+            Farm Status
+            <span class="tooltip">
+                <i class="fas fa-info-circle"></i>
+                <span class="tooltiptext">
+                    Data is aggregated into 10-minute intervals for the past 24 hours.<br>
+                    Pass rate = (passed / (passed + failed)) * 100.<br>
+                    Rolling Median / Threshold lines are computed using a 2-hour window (12 intervals) and MAD.
+                </span>
+            </span>
+        </h1>
         <p>Select a farm to view its status over the past 24 hours</p>
     </div>
 
-    <!-- Farm Selection -->
     <div class="farm-selection">
         <label for="farmSelect">Select Farm:</label>
         <select id="farmSelect">
@@ -232,221 +304,490 @@
         </select>
     </div>
 
-    <!-- Chart Container -->
-    <div class="chart-container">
-        <canvas id="farmStatusChart"></canvas>
+    <div class="line-toggles">
+        <label>
+            <input type="checkbox" id="toggleMedian" checked />
+            Show Median
+        </label>
+        <label>
+            <input type="checkbox" id="toggleThreshold" checked />
+            Show Threshold
+        </label>
     </div>
 
-    <!-- Include jQuery -->
+    <div class="chart-container">
+        <div id="chartLoader" class="chart-loader hidden">
+            <div class="loader-spinner"></div>
+        </div>
+        <canvas id="farmStatusChart"></canvas>
+        <div id="chartStatusMessage" class="chart-status-message hidden">Loading data...</div>
+        <div id="custom-tooltip" class="chartjs-external-tooltip"></div>
+    </div>
+
+    <footer class="signature">
+        <p>&copy; 2025 AutomationDashboard</p>
+    </footer>
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-    <!-- Custom Script -->
     <script>
-        // Function to update date and time
+        /****************************************************************
+         * 1. Update Date/Time in Navbar
+         ****************************************************************/
         function updateDateTime() {
             const dateTimeElement = document.getElementById('currentDateTime');
             const now = new Date();
-            const formattedDateTime = now.toLocaleString();
-            dateTimeElement.textContent = formattedDateTime;
+            dateTimeElement.textContent = now.toLocaleString();
         }
-        // Update date/time every second
         setInterval(updateDateTime, 1000);
-        updateDateTime(); // initial call
+        updateDateTime();
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const farmSelect = document.getElementById('farmSelect');
-            let farmStatusChart;
+        /****************************************************************
+         * 2. Theme Toggle
+         ****************************************************************/
+        const lightModeBtn = document.getElementById('lightModeBtn');
+        const darkModeBtn = document.getElementById('darkModeBtn');
+        const storedTheme = localStorage.getItem('theme') || 'light';
 
-            // ==============================
-            // THEME TOGGLE (two-button)
-            // ==============================
-            const lightModeBtn = document.getElementById('lightModeBtn');
-            const darkModeBtn = document.getElementById('darkModeBtn');
-            const storedTheme = localStorage.getItem('theme') || 'light';
-            document.body.setAttribute('data-theme', storedTheme);
+        document.body.setAttribute('data-theme', storedTheme);
+        if (storedTheme === 'dark') {
+            darkModeBtn.classList.add('active');
+            lightModeBtn.classList.remove('active');
+        } else {
+            lightModeBtn.classList.add('active');
+            darkModeBtn.classList.remove('active');
+        }
 
-            if (storedTheme === 'dark') {
-                darkModeBtn.classList.add('active');
-                lightModeBtn.classList.remove('active');
-            } else {
-                lightModeBtn.classList.add('active');
-                darkModeBtn.classList.remove('active');
+        lightModeBtn.addEventListener('click', () => {
+            document.body.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+            lightModeBtn.classList.add('active');
+            darkModeBtn.classList.remove('active');
+        });
+        darkModeBtn.addEventListener('click', () => {
+            document.body.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            darkModeBtn.classList.add('active');
+            lightModeBtn.classList.remove('active');
+        });
+
+        /****************************************************************
+         * 3. Crosshair Plugin
+         ****************************************************************/
+        const crosshairPlugin = {
+            id: 'crosshair',
+            afterDraw(chart, args, options) {
+                if (chart.tooltip && chart.tooltip._active && chart.tooltip._active.length) {
+                    const ctx = chart.ctx;
+                    ctx.save();
+                    const activePoint = chart.tooltip._active[0];
+                    const x = activePoint.element.x;
+                    const y = activePoint.element.y;
+                    const chartArea = chart.chartArea;
+
+                    // Vertical line
+                    ctx.beginPath();
+                    ctx.moveTo(x, chartArea.top);
+                    ctx.lineTo(x, chartArea.bottom);
+                    ctx.lineWidth = options.lineWidth || 1;
+                    ctx.strokeStyle = options.lineColor || 'red';
+                    ctx.stroke();
+
+                    // Horizontal line
+                    ctx.beginPath();
+                    ctx.moveTo(chartArea.left, y);
+                    ctx.lineTo(chartArea.right, y);
+                    ctx.lineWidth = options.lineWidth || 1;
+                    ctx.strokeStyle = options.lineColor || 'red';
+                    ctx.stroke();
+
+                    ctx.restore();
+                }
+            }
+        };
+        Chart.register(crosshairPlugin);
+
+        /****************************************************************
+         * 4. Anomaly Detection
+         ****************************************************************/
+        function computeMedian(arr) {
+            const sorted = arr.slice().sort((a, b) => a - b);
+            const len = sorted.length;
+            if (!len) return null;
+            const mid = Math.floor(len / 2);
+            return (len % 2) ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+        }
+        function computeMAD(values, median) {
+            const deviations = values.map(v => Math.abs(v - median));
+            return computeMedian(deviations);
+        }
+        function detectAnomaliesRolling(passRates, windowSize = 12, multiplier = 1.5) {
+            let anomalies = [];
+            let localMedians = [];
+            let localMADs = [];
+
+            for (let i = 0; i < passRates.length; i++) {
+                const start = Math.max(0, i - windowSize + 1);
+                const windowData = passRates.slice(start, i + 1).filter(v => v !== null);
+
+                if (windowData.length === 0) {
+                    anomalies.push(false);
+                    localMedians.push(null);
+                    localMADs.push(null);
+                    continue;
+                }
+
+                const localMedian = computeMedian(windowData);
+                const localMAD = computeMAD(windowData, localMedian);
+                const threshold = localMedian - multiplier * localMAD;
+                const currentValue = passRates[i];
+                const isAnomaly = (currentValue !== null && currentValue < threshold);
+
+                anomalies.push(isAnomaly);
+                localMedians.push(localMedian);
+                localMADs.push(localMAD);
+            }
+            return { anomalies, localMedians, localMADs };
+        }
+
+        /****************************************************************
+         * 5. Process Farm Data
+         ****************************************************************/
+        function processFarmData(farmData) {
+            const now = Date.now();
+            const tenMinutes = 600000;
+            const totalIntervals = 24 * 6; // 144 intervals for 24h
+
+            // Build intervals
+            const intervals = [];
+            for (let i = totalIntervals - 1; i >= 0; i--) {
+                intervals.push(now - i * tenMinutes);
             }
 
-            lightModeBtn.addEventListener('click', () => {
-                document.body.setAttribute('data-theme', 'light');
-                localStorage.setItem('theme', 'light');
-                lightModeBtn.classList.add('active');
-                darkModeBtn.classList.remove('active');
+            // pass/fail counters
+            const dataPoints = new Array(totalIntervals).fill(null).map(() => ({ passed: 0, failed: 0 }));
+            farmData.forEach(test => {
+                const testTime = new Date(test.start_time).getTime();
+                const firstIntervalTime = now - totalIntervals * tenMinutes;
+                const intervalIndex = Math.floor((testTime - firstIntervalTime) / tenMinutes);
+                if (intervalIndex >= 0 && intervalIndex < totalIntervals) {
+                    if (test.status === 'passed') {
+                        dataPoints[intervalIndex].passed++;
+                    } else if (test.status === 'failed') {
+                        dataPoints[intervalIndex].failed++;
+                    }
+                }
             });
 
-            darkModeBtn.addEventListener('click', () => {
-                document.body.setAttribute('data-theme', 'dark');
-                localStorage.setItem('theme', 'dark');
-                darkModeBtn.classList.add('active');
-                lightModeBtn.classList.remove('active');
+            // passRates
+            const passRates = dataPoints.map(dp => {
+                const total = dp.passed + dp.failed;
+                return total > 0 ? (dp.passed / total) * 100 : null;
             });
-            // ==============================
 
-            // Function to fetch and render farm data
-            function fetchAndRenderFarmData(farmName) {
-                fetch(`/get_farm_data?farm=${encodeURIComponent(farmName)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.error) {
-                            alert(data.error);
-                            return;
+            // Anomaly detection => local median, MAD
+            const { anomalies, localMedians, localMADs } = detectAnomaliesRolling(passRates);
+
+            // Combine data
+            const chartData = [];
+            for (let i = 0; i < passRates.length; i++) {
+                const passRate = passRates[i];
+                const median = localMedians[i];
+                const mad = localMADs[i];
+                let threshold = null;
+                if (median !== null && mad !== null) {
+                    threshold = median - 1.5 * mad;
+                }
+                chartData.push({
+                    x: new Date(intervals[i]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    y: passRate,
+                    anomaly: anomalies[i],
+                    passed: dataPoints[i].passed,
+                    failed: dataPoints[i].failed,
+                    localMedian: median,
+                    localMAD: mad,
+                    threshold
+                });
+            }
+            return chartData;
+        }
+
+        /****************************************************************
+         * 6. External Tooltip Handler
+         *    -> pinned near top-right of the PAGE (position: fixed)
+         ****************************************************************/
+        function externalTooltipHandler(context) {
+            const { chart, tooltip } = context;
+            const tooltipEl = document.getElementById('custom-tooltip');
+            if (!tooltipEl) return;
+
+            // Hide if no hovered points
+            if (tooltip.opacity === 0) {
+                tooltipEl.style.opacity = 0;
+                return;
+            }
+
+            let html = '';
+            if (tooltip.dataPoints && tooltip.dataPoints.length > 0) {
+                // Show data for each hovered dataset
+                tooltip.dataPoints.forEach(dp => {
+                    const dsIndex = dp.datasetIndex;
+                    const idx = dp.dataIndex;
+                    const rawObj = dp.chart.config.data.chartData[idx];
+
+                    // Dataset #0 => pass rate
+                    if (dsIndex === 0) {
+                        if (!rawObj || rawObj.y === null) {
+                            html += `<div style="margin-top:6px;">No data for this interval</div>`;
+                        } else {
+                            const passRate = rawObj.y.toFixed(2) + '%';
+                            const anomaly = rawObj.anomaly
+                              ? `<span style="color:red;">(Anomaly Detected)</span>`
+                              : '';
+                            html += `
+                              <div style="margin-top:6px; color:#3cb44b;">
+                                <strong>${rawObj.x}</strong><br/>
+                                Pass Rate: ${passRate} ${anomaly}<br/>
+                                Passed: ${rawObj.passed}, Failed: ${rawObj.failed}
+                              </div>
+                            `;
                         }
-                        // Process and render the chart
-                        const { labels, dataset } = processFarmData(data);
-                        renderFarmStatusChart(labels, dataset, farmName);
-                    })
-                    .catch(error => console.error('Error fetching farm data:', error));
-            }
-
-            // Function to process farm data
-            function processFarmData(farmData) {
-                const now = Date.now();
-                const oneHour = 3600 * 1000;
-                const intervals = [];
-
-                for (let i = 23; i >= 0; i--) {
-                    intervals.push(now - i * oneHour);
-                }
-                const labels = intervals.map(ts =>
-                    new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                );
-
-                const dataPoints = new Array(24).fill(null).map(() => ({ passed: 0, failed: 0 }));
-
-                farmData.forEach(test => {
-                    const testTime = test.start_time; // already in ms
-                    const status = test.status;
-                    // intervalIndex from 0..23
-                    const intervalIndex = Math.floor((testTime - (now - 24 * oneHour)) / oneHour);
-
-                    if (intervalIndex >= 0 && intervalIndex < 24) {
-                        dataPoints[intervalIndex][status]++;
+                    }
+                    // Dataset #1 => median
+                    else if (dsIndex === 1) {
+                        if (rawObj.localMedian == null) {
+                            html += `<div style="color:#6495ed; margin-top:6px;">No median data</div>`;
+                        } else {
+                            html += `
+                              <div style="color:#6495ed; margin-top:6px;">
+                                <strong>${rawObj.x}</strong><br/>
+                                Rolling Median: ${rawObj.localMedian.toFixed(2)}%
+                              </div>
+                            `;
+                        }
+                    }
+                    // Dataset #2 => threshold
+                    else if (dsIndex === 2) {
+                        if (rawObj.threshold == null) {
+                            html += `<div style="color:#ff9900; margin-top:6px;">No threshold data</div>`;
+                        } else {
+                            html += `
+                              <div style="color:#ff9900; margin-top:6px;">
+                                <strong>${rawObj.x}</strong><br/>
+                                Threshold: ${rawObj.threshold.toFixed(2)}%
+                              </div>
+                            `;
+                        }
                     }
                 });
-
-                // Calculate pass rates for each hour
-                const passRates = dataPoints.map(dp => {
-                    const total = dp.passed + dp.failed;
-                    if (total > 0) {
-                        return (dp.passed / total) * 100;
-                    } else {
-                        return null; // No data this hour
-                    }
-                });
-
-                return {
-                    labels: labels,
-                    dataset: passRates
-                };
             }
 
-            // Render the chart
-            function renderFarmStatusChart(labels, dataPoints, farmName) {
-                const ctx = document.getElementById('farmStatusChart').getContext('2d');
+            tooltipEl.innerHTML = html || '<div>No data</div>';
+            tooltipEl.style.opacity = 1;  // Make it visible
+            // We don't change top/left here because it's position: fixed at top:20px,right:20px
+        }
 
-                if (farmStatusChart) {
-                    farmStatusChart.destroy();
-                }
+        /****************************************************************
+         * 7. Render Chart
+         ****************************************************************/
+        let farmStatusChart;
 
-                farmStatusChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: `${farmName} Pass Rate`,
-                            data: dataPoints,
-                            fill: false,
-                            borderColor: '#3cb44b',  // Green line
+        // [SUGGESTION]: Define pointBackgroundColor as a named function for better readability
+        function anomalyPointBackgroundColor(context) {
+            const chartData = context.chart.config.data.chartData; // Access chartData from chart config
+            const dataIndex = context.dataIndex;
+            const isAnomaly = chartData[dataIndex].anomaly;
+            return isAnomaly ? 'red' : '#3cb44b';
+        }
+
+
+        function renderFarmStatusChart(chartData, farmName) {
+            const ctx = document.getElementById('farmStatusChart').getContext('2d');
+            const chartStatusMessage = document.getElementById('chartStatusMessage');
+            chartStatusMessage.classList.add('hidden'); // Hide status message, show chart area
+
+            if (farmStatusChart) {
+                farmStatusChart.destroy();
+            }
+
+            // Prep data
+            const labels = chartData.map(d => d.x);
+            const passRateData = chartData.map(d => d.y);
+            const medianData = chartData.map(d => d.localMedian);
+            const thresholdData = chartData.map(d => d.threshold);
+
+            farmStatusChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels,
+                    chartData, // store entire structure for external tooltip
+                    datasets: [
+                        {
+                            label: farmName + ' Pass Rate',
+                            data: passRateData,
+                            borderColor: '#3cb44b',
                             tension: 0.1,
-                            pointStyle: 'circle',
-                            pointRadius: 3,
-                            spanGaps: true
-                        }]
+                            fill: false,
+                            pointRadius: 4,
+                            // [SUGGESTION]: Use named function for pointBackgroundColor
+                            pointBackgroundColor: anomalyPointBackgroundColor,
+                            pointStyle: function(context) { // [SUGGESTION]: Differentiate anomaly point shape
+                                const chartData = context.chart.config.data.chartData; // Access chartData from chart config
+                                const dataIndex = context.dataIndex;
+                                const isAnomaly = chartData[dataIndex].anomaly;
+                                return isAnomaly ? 'triangle' : 'circle';
+                            },
+                            pointRadius: function(context) { // [SUGGESTION]: Increase anomaly point size
+                                const chartData = context.chart.config.data.chartData; // Access chartData from chart config
+                                const dataIndex = context.dataIndex;
+                                const isAnomaly = chartData[dataIndex].anomaly;
+                                return isAnomaly ? 7 : 4;
+                            }
+                        },
+                        {
+                            label: 'Rolling Median (2h Window)',
+                            data: medianData,
+                            borderColor: '#6495ed',
+                            tension: 0.1,
+                            fill: false,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Threshold (Median - 1.5Ã—MAD)',
+                            data: thresholdData,
+                            borderColor: '#ff9900',
+                            tension: 0.1,
+                            fill: false,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    onHover: function(evt, activeElements) {
+                        evt.native.target.style.cursor = activeElements.length ? 'pointer' : 'default';
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        layout: {
-                            padding: {
-                                bottom: 50
-                            }
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        crosshair: {
+                            lineWidth: 1,
+                            lineColor: 'red'
                         },
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: `Farm Status Over Time: ${farmName}`
-                            },
-                            tooltip: {
-                                mode: 'index',
-                                intersect: false,
-                                callbacks: {
-                                    label: function(context) {
-                                        const label = context.dataset.label || '';
-                                        const val = context.parsed.y !== null
-                                            ? context.parsed.y.toFixed(2) + '%'
-                                            : 'No data';
-                                        return `${label}: ${val}`;
-                                    }
-                                }
-                            },
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    usePointStyle: true
-                                }
-                            }
+                        title: {
+                            display: true,
+                            text: 'Farm Status Over Time: ' + farmName
                         },
-                        scales: {
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Time'
-                                },
-                                ticks: {
-                                    maxRotation: 45,
-                                    minRotation: 45
-                                }
-                            },
-                            y: {
-                                min: 0,
-                                max: 100,
-                                ticks: {
-                                    stepSize: 10,
-                                    callback: function(value) {
-                                        return value + '%';
-                                    }
-                                },
-                                title: {
-                                    display: true,
-                                    text: 'Pass Rate (%)'
-                                }
-                            }
+                        tooltip: {
+                            enabled: false,           // disable built-in
+                            external: externalTooltipHandler
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Time' }
+                        },
+                        y: {
+                            title: { display: true, text: 'Pass Rate (%)' },
+                            suggestedMin: 0,
+                            suggestedMax: 100
                         }
                     }
+                }
+            });
+        }
+
+        /****************************************************************
+         * 8. Toggle Median & Threshold Lines
+         ****************************************************************/
+        function setupLineToggles() {
+            const toggleMedian = document.getElementById('toggleMedian');
+            const toggleThreshold = document.getElementById('toggleThreshold');
+
+            toggleMedian.addEventListener('change', () => {
+                if (farmStatusChart) {
+                    // index=1 for median
+                    farmStatusChart.data.datasets[1].hidden = !toggleMedian.checked;
+                    farmStatusChart.update();
+                }
+            });
+
+            toggleThreshold.addEventListener('change', () => {
+                if (farmStatusChart) {
+                    // index=2 for threshold
+                    farmStatusChart.data.datasets[2].hidden = !toggleThreshold.checked;
+                    farmStatusChart.update();
+                }
+            });
+        }
+
+        /****************************************************************
+         * 9. Fetch Data & Render
+         ****************************************************************/
+        function showLoader() {
+            const loader = document.getElementById('chartLoader');
+            loader.classList.remove('hidden');
+            const chartStatusMessage = document.getElementById('chartStatusMessage');
+            chartStatusMessage.classList.add('hidden'); // Hide status message when loader is shown
+        }
+
+        function hideLoader() {
+            const loader = document.getElementById('chartLoader');
+            loader.classList.add('hidden');
+        }
+
+        function fetchAndRenderFarmData(farmName) {
+            showLoader(); // Show loader immediately when fetching starts
+
+            const chartStatusMessage = document.getElementById('chartStatusMessage');
+            chartStatusMessage.textContent = 'Loading data...'; // We can still set this, or remove it if only using loader now
+            chartStatusMessage.classList.add('hidden'); // Initially hide the status message
+
+            fetch(`/get_farm_data?farm=${encodeURIComponent(farmName)}`)
+                .then(response => response.json())
+                .then(data => {
+                    hideLoader(); // Hide loader on successful data retrieval
+                    if (!data || data.length === 0) {
+                        chartStatusMessage.textContent = 'No data available for this farm.';
+                        chartStatusMessage.classList.remove('hidden');
+                        if (farmStatusChart) {
+                            farmStatusChart.destroy(); // Clear old chart if any
+                            farmStatusChart = null;
+                        }
+                    } else {
+                        const chartData = processFarmData(data);
+                        renderFarmStatusChart(chartData, farmName);
+                        chartStatusMessage.classList.add('hidden'); // Ensure status message remains hidden if chart renders
+                    }
+                })
+                .catch(error => {
+                    hideLoader(); // Hide loader on error as well
+                    chartStatusMessage.textContent = 'Error fetching farm data.';
+                    chartStatusMessage.classList.remove('hidden');
+                    console.error('Error fetching farm data:', error);
+                    if (farmStatusChart) {
+                        farmStatusChart.destroy(); // Clear old chart if any
+                        farmStatusChart = null;
+                    }
                 });
+        }
+
+        /****************************************************************
+         * 10. Initialization
+         ****************************************************************/
+        $(document).ready(function() {
+            setupLineToggles();
+            const farmSelect = document.getElementById('farmSelect');
+            if (farmSelect.value) {
+                fetchAndRenderFarmData(farmSelect.value);
             }
-
-            // Initial render for the first farm
-            const initialFarm = farmSelect.value;
-            fetchAndRenderFarmData(initialFarm);
-
-            // Update chart when selection changes
-            farmSelect.addEventListener('change', function () {
-                const selectedFarm = this.value;
-                fetchAndRenderFarmData(selectedFarm);
+            farmSelect.addEventListener('change', function() {
+                fetchAndRenderFarmData(this.value);
             });
         });
     </script>
-
-    <!-- Footer -->
-    <footer class="signature">
-        <p>&copy; 2024 Automation Team. All rights reserved.</p>
-    </footer>
 </body>
 </html>

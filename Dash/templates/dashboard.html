@@ -4,179 +4,478 @@
     <meta charset="UTF-8">
     <title>Automation Tests Dashboard</title>
    
-    <link rel="icon" 
-          type="image/png" 
-          href="{{ url_for('static', filename='img/22671') }}">
+    <!-- Favicon -->
+    <link
+        rel="icon"
+        type="image/png"
+        href="{{ url_for('static', filename='img/22671') }}"
+    >
 
     <!-- Responsive Meta Tag -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Include Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
+        rel="stylesheet"
+    >
 
-    <!-- Include Chart.js -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Link to the Stylesheet -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- Font Awesome Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
 
-    <!-- Include Font Awesome Icons via CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Your main CSS file (MUST include side menu + push rules) -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/styles.css') }}"
+    >
+
+    <!-- jsPDF (UMD) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- jsPDF AutoTable plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable/dist/jspdf.plugin.autotable.min.js"></script>
+
 </head>
+
 <body aria-label="Automation Dashboard Body" data-theme="light">
-    <!-- Navbar -->
-    <nav class="navbar" aria-label="Main navigation">
-        <div class="navbar-content">
-            <div class="navbar-brand">
-                <a href="#" title="Go to Dashboard">Automation<span>Dashboard</span></a>
-                <!-- Blinking Indicator for repeated failures -->
-                <div id="alertIndicator" class="alert-indicator" onclick="showFailedTestsAlert()" style="display: none;">
-                    <i class="fas fa-exclamation-triangle"></i>
+    <!-- SIDE MENU (Push style) -->
+    <div id="sideMenu" class="side-menu">
+        <!-- Close button -->
+        <button class="close-side-menu" onclick="closeSideMenu()">&times;</button>
+
+        <h3>Menu</h3>
+        <hr>
+
+        <!-- Export Data Section -->
+        <div style="margin-bottom: 12px;">
+            <h4>Export Data</h4>
+            <!-- Instead of directly calling export*, we call promptExport* -->
+            <button onclick="promptExportCSV()">Export CSV</button>
+            <button onclick="promptExportPDF()">Export PDF</button>
+        </div>
+        <!-- Add any more side menu items here as needed -->
+    </div>
+
+    <!-- MAIN CONTENT WRAPPER -->
+    <div class="main-content">
+        <!-- Navbar -->
+        <nav class="navbar" aria-label="Main navigation">
+            <div class="navbar-content">
+                <div class="navbar-brand">
+                    <!-- Hamburger Button to Open Side Menu -->
+                    <button
+                      class="menu-toggle"
+                      onclick="openSideMenu()"
+                      title="Open Side Menu"
+                      style="background: none; border: none; cursor: pointer; margin-right: 12px;"
+                    >
+                        <i class="fas fa-bars" style="font-size: 22px;"></i>
+                    </button>
+
+                    <a href="#" title="Go to Dashboard">Automation<span>Dashboard</span></a>
+                    <!-- Blinking Indicator for repeated failures -->
+                    <div
+                        id="alertIndicator"
+                        class="alert-indicator"
+                        onclick="showFailedTestsAlert()"
+                        style="display: none;"
+                    >
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
                 </div>
+
+                <!-- Two-Button Theme Toggle -->
+                <div class="theme-mode-toggle" aria-label="Theme Toggle">
+                    <button
+                      id="lightModeBtn"
+                      class="toggle-option active"
+                      title="Activate Light Mode"
+                    >
+                        <i class="fas fa-sun"></i>
+                        <span>Light Mode</span>
+                    </button>
+                    <button
+                      id="darkModeBtn"
+                      class="toggle-option"
+                      title="Activate Dark Mode"
+                    >
+                        <i class="fas fa-moon"></i>
+                        <span>Dark Mode</span>
+                    </button>
+                </div>
+
+                <!-- Date/Time element (Easter Egg Trigger) -->
+                <div id="currentDateTime" class="current-datetime"></div>
+            </div>
+        </nav>
+
+        <!-- Header Container -->
+        <div class="header-container">
+            <h1>Automation Tests Dashboard</h1>
+            <p>Your centralized hub for test results and analytics</p>
+        </div>
+
+        <!-- Chart Container -->
+        <div class="chart-container">
+            <div class="chart">
+                <h2>Overall Statistics</h2>
+                <hr>
+                <canvas id="testStatsChart"></canvas>
+            </div>
+            <div class="chart">
+                <h2>Last Hour Statistics</h2>
+                <hr>
+                <canvas id="lastHourStatsChart"></canvas>
+            </div>
+            <div class="chart">
+                <h2>Most Failed Tests</h2>
+                <hr>
+                <canvas id="failedTestsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Filter and Button Row -->
+        <div class="filter-buttons-container">
+            <div class="left-section">
+                <button
+                    class="reset-button"
+                    onclick="location.reload();"
+                    title="Reset all filters and reload the page"
+                >
+                    <i class="fas fa-sync-alt"></i> Reset Filters
+                </button>
+                <label for="categoryFilter">Filter by Category:</label>
+                <select
+                    id="categoryFilter"
+                    title="Select a category to filter the tests"
+                >
+                    <option value="all">All</option>
+                    <option value="qa">QA</option>
+                    <option value="av">AV</option>
+                    <option value="cp">CP</option>
+                </select>
+
+                <!-- NEW: Farm Dropdown -->
+                <label for="farmFilter">Filter by Farm:</label>
+                <select
+                    id="farmFilter"
+                    title="Select a farm to filter the tests"
+                >
+                    <option value="all">All</option>
+                </select>
+
+                <!-- NEW: Cluster Dropdown -->
+                <label for="clusterFilter">Filter by Cluster:</label>
+                <select
+                    id="clusterFilter"
+                    title="Select a cluster to filter the tests"
+                >
+                    <option value="all">All</option>
+                </select>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search keyword..."
+                    title="Search tests by keyword"
+                >
+
+                <!-- Auto-Refresh Dropdown (Persisted in localStorage) -->
+                <label for="autoRefreshSelect">Auto-Refresh:</label>
+                <select
+                    id="autoRefreshSelect"
+                    title="Auto-Refresh the page"
+                >
+                    <option value="0">Off</option>
+                    <option value="5000">5S</option>
+                    <option value="10000">10S</option>
+                    <option value="30000">30S</option>
+                    <option value="60000">1M</option>
+                </select>
             </div>
 
-            <!-- Two-Button Theme Toggle -->
-            <div class="theme-mode-toggle" aria-label="Theme Toggle">
-                <button 
-                  id="lightModeBtn" 
-                  class="toggle-option active" 
-                  title="Activate Light Mode"
+            <!-- Grafana Buttons -->
+            <div class="grafana-buttons">
+                <a
+                    href="https://grafana-main-console.avanan.net/d/d28eee2c-6862-4c30-8111-ea37e99af204/bbd-qa-dashboard?orgId=1&refresh=1m&var-Farm=mt-qa-1&var-Cluster=4"
+                    target="_blank"
                 >
-                    <i class="fas fa-sun"></i>
-                    <span>Light Mode</span>
-                </button>
-                <button 
-                  id="darkModeBtn" 
-                  class="toggle-option" 
-                  title="Activate Dark Mode"
+                    <button class="grafana-button" title="Open Grafana QA Dashboard">
+                        <i class="fas fa-chart-line"></i> Grafana QA
+                    </button>
+                </a>
+                <a
+                    href="https://grafana-main-console.avanan.net/d/d28eee2c-6862-4c30-8111-ea37e99af204/bbd-qa-dashboard?orgId=1&refresh=1m"
+                    target="_blank"
                 >
-                    <i class="fas fa-moon"></i>
-                    <span>Dark Mode</span>
-                </button>
+                    <button class="grafana-button" title="Open Grafana Production Dashboard">
+                        <i class="fas fa-chart-line"></i> Grafana Production
+                    </button>
+                </a>
+                <a
+                    href="{{ url_for('bdd_search') }}"
+                    target="_blank"
+                >
+                    <button class="bdd-search-button" title="Search the BDD Wiki">
+                        <i class="fas fa-search"></i> BDD Wiki
+                    </button>
+                </a>
+                <a
+                    href="{{ url_for('farm_status') }}"
+                    target="_blank"
+                >
+                    <button class="farm-status-button" title="View Farm Status Over Time">
+                        <i class="fas fa-chart-line"></i> Farm Status
+                    </button>
+                </a>
             </div>
-
-            <!-- Date/Time element (Easter Egg Trigger) -->
-            <div id="currentDateTime" class="current-datetime"></div>
-        </div>
-    </nav>
-
-    <!-- Header Container -->
-    <div class="header-container">
-        <h1>Automation Tests Dashboard</h1>
-        <p>Your centralized hub for test results and analytics</p>
-    </div>
-
-    <!-- Chart Container -->
-    <div class="chart-container">
-        <div class="chart">
-            <h2>Overall Statistics</h2>
-            <hr>
-            <canvas id="testStatsChart"></canvas>
-        </div>
-        <div class="chart">
-            <h2>Last Hour Statistics</h2>
-            <hr>
-            <canvas id="lastHourStatsChart"></canvas>
-        </div>
-        <div class="chart">
-            <h2>Most Failed Tests</h2>
-            <hr>
-            <canvas id="failedTestsChart"></canvas>
-        </div>
-    </div>
-
-    <!-- Filter and Button Row -->
-    <div class="filter-buttons-container">
-        <div class="left-section">
-            <button class="reset-button" onclick="location.reload();" title="Reset all filters and reload the page">
-                <i class="fas fa-sync-alt"></i> Reset Filters
-            </button>
-            <label for="categoryFilter">Filter by Category:</label>
-            <select id="categoryFilter" title="Select a category to filter the tests">
-                <option value="all">All</option>
-                <option value="qa">QA</option>
-                <option value="av">AV</option>
-                <option value="cp">CP</option>
-            </select>
-            <input type="text" id="searchInput" placeholder="Search keyword..." title="Search tests by keyword">
-
-            <!-- Auto-Refresh Dropdown (Persisted in localStorage) -->
-            <label for="autoRefreshSelect">Auto-Refresh:</label>
-            <select id="autoRefreshSelect" title="Auto-Refresh the page">
-                <option value="0">Off</option>
-                <option value="5000">5S</option>
-                <option value="10000">10S</option>
-                <option value="30000">30S</option>
-                <option value="60000">1M</option>
-            </select>
         </div>
 
-        <!-- Grafana Buttons -->
-        <div class="grafana-buttons">
-            <a href="https://grafana-main-console.avanan.net/d/d28eee2c-6862-4c30-8111-ea37e99af204/bbd-qa-dashboard?orgId=1&refresh=1m&var-Farm=mt-qa-1&var-Cluster=4" target="_blank">
-                <button class="grafana-button" title="Open Grafana QA Dashboard">
-                    <i class="fas fa-chart-line"></i> Grafana QA
-                </button>
-            </a>
-            <a href="https://grafana-main-console.avanan.net/d/d28eee2c-6862-4c30-8111-ea37e99af204/bbd-qa-dashboard?orgId=1&refresh=1m" target="_blank">
-                <button class="grafana-button" title="Open Grafana Production Dashboard">
-                    <i class="fas fa-chart-line"></i> Grafana Production
-                </button>
-            </a>
-            <a href="{{ url_for('bdd_search') }}" target="_blank">
-                <button class="bdd-search-button" title="Search the BDD Wiki">
-                    <i class="fas fa-search"></i> BDD Wiki
-                </button>
-            </a>
-            <a href="{{ url_for('farm_status') }}" target="_blank">
-                <button class="farm-status-button" title="View Farm Status Over Time">
-                    <i class="fas fa-chart-line"></i> Farm Status
-                </button>
-            </a>
+        <!-- Table layout with expansions -->
+        <table class="test-summary-table">
+            <thead>
+                <tr>
+                    <th>Run Name</th>
+                    <th>Results Indicators</th>
+                    <th>Xray</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="testList"></tbody>
+        </table>
+
+        <!-- Pagination Container -->
+        <div id="paginationControls" class="pagination-controls"></div>
+
+        <!-- Full-page overlay loader -->
+        <div id="loaderOverlay" class="loader-overlay" style="display:none;">
+            <div class="loader"></div>
         </div>
-    </div>
 
-    <!-- 
-         Table layout with expansions 
-    -->
-    <table class="test-summary-table">
-        <thead>
-            <tr>
-                <th>Run Name</th>
-                <th>Results Indicators</th>
-                <th>Xray</th>
-                <th>Time</th>
-            </tr>
-        </thead>
-        <tbody id="testList"></tbody>
-    </table>
-
-    <!-- Pagination Container -->
-    <div id="paginationControls" class="pagination-controls"></div>
-
-    <!-- Full-page overlay loader -->
-    <div id="loaderOverlay" class="loader-overlay" style="display:none;">
-        <div class="loader"></div>
-    </div>
-
-    <!-- Modal Dialog for Repeated Failures -->
-    <div id="failedTestsModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeFailedTestsModal()">&times;</span>
-            <h2>Repeated Test Failures</h2>
-            <p>The following tests have failed 3 or more times in a row in the last hour:</p>
-            <ul id="failedTestsList"></ul>
+        <!-- Modal Dialog for Repeated Failures -->
+        <div id="failedTestsModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeFailedTestsModal()">&times;</span>
+                <h2>Repeated Test Failures</h2>
+                <p>The following tests have failed 3 or more times in a row in the last hour:</p>
+                <ul id="failedTestsList"></ul>
+            </div>
         </div>
-    </div>
+    </div>  <!-- END .main-content -->
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-    <!-- Custom Script -->
+    <!-- Main Inline Script -->
     <script>
-        /************************************************************
-         * 1) Full-page overlay loader (3s minimum)
-         ************************************************************/
+        /****************************************************************
+         * 1) Side Menu "Push" Logic
+         ****************************************************************/
+        function openSideMenu() {
+            document.getElementById('sideMenu').classList.add('open');
+            document.body.classList.add('menu-open'); // pushes .main-content right
+        }
+        function closeSideMenu() {
+            document.getElementById('sideMenu').classList.remove('open');
+            document.body.classList.remove('menu-open');
+        }
+
+        /****************************************************************
+         * 2) Prompt user for "all" or # of pages, then call export
+         ****************************************************************/
+        function promptExportCSV() {
+            let response = prompt("Enter a number of pages to export or 'all' for everything:");
+            if (!response) return; // user canceled
+            response = response.trim().toLowerCase();
+            exportTableToCSV(response);
+        }
+        function promptExportPDF() {
+            let response = prompt("Enter a number of pages to export or 'all' for everything:");
+            if (!response) return;
+            response = response.trim().toLowerCase();
+            exportTableToPDF(response);
+        }
+
+        /****************************************************************
+         * 3) Gather Data from window.files with pagination or all
+         ****************************************************************/
+        function gatherExportData(pageRequest) {
+            // "pageRequest" is either "all" or a string representing #pages
+            // We will gather data from window.files, replicating the sorting & filtering logic
+
+            const dataRows = [];
+            // get current filter settings => to respect user category & search filters
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const farmFilter = document.getElementById('farmFilter') ? document.getElementById('farmFilter').value : 'all';
+            const clusterFilter = document.getElementById('clusterFilter') ? document.getElementById('clusterFilter').value : 'all';
+            const searchKeyword = document.getElementById('searchInput').value.toLowerCase();
+
+            const oneHourAgo = Date.now() - 3600 * 1000;
+            const sortedFiles = Object.keys(window.files).sort(
+                (a, b) => window.files[b].timestamp - window.files[a].timestamp
+            );
+
+            // filter out files not matching user filters / search
+            const fileNames = sortedFiles.filter(filename => {
+                const fileObj = window.files[filename];
+
+                // Category filter
+                if (categoryFilter !== 'all') {
+                    if (!fileObj.categories.has(categoryFilter)) return false;
+                }
+                // Farm filter
+                if (farmFilter !== 'all') {
+                    // check if any test in that file has this farm
+                    let hasFarm = false;
+                    for (const t of fileObj.tests) {
+                        if (t.farm === farmFilter) {
+                            hasFarm = true;
+                            break;
+                        }
+                    }
+                    if (!hasFarm) return false;
+                }
+                // Cluster filter
+                if (clusterFilter !== 'all') {
+                    let hasCluster = false;
+                    for (const t of fileObj.tests) {
+                        if (t.cluster === clusterFilter) {
+                            hasCluster = true;
+                            break;
+                        }
+                    }
+                    if (!hasCluster) return false;
+                }
+                // search keyword
+                if (searchKeyword) {
+                    let matched = false;
+                    for (const t of fileObj.tests) {
+                        if (t.name.toLowerCase().includes(searchKeyword)) {
+                            matched = true;
+                            break;
+                        }
+                    }
+                    const fileNameMatches = filename.toLowerCase().includes(searchKeyword);
+                    if (!matched && !fileNameMatches) return false;
+                }
+                return true;
+            });
+
+            // how many items per page?
+            const itemsPerPage = 25;
+            // how many total pages?
+            const totalPages = Math.ceil(fileNames.length / itemsPerPage);
+
+            let requestedPages = 1;
+            if (pageRequest === 'all') {
+                requestedPages = totalPages;
+            } else {
+                const num = parseInt(pageRequest, 10);
+                if (isNaN(num) || num < 1) {
+                    requestedPages = 1;  // fallback if user typed something invalid
+                } else {
+                    requestedPages = Math.min(num, totalPages);
+                }
+            }
+
+            // gather data from "page 1" up to "requestedPages"
+            for (let currentPage = 1; currentPage <= requestedPages; currentPage++) {
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const pageFiles = fileNames.slice(startIndex, endIndex);
+
+                pageFiles.forEach(filename => {
+                    const baseName = filename.replace('.html', '');
+                    const tests = window.files[filename].tests;
+
+                    // Build "Results Indicators" => parse the tests
+                    let spans = [];
+                    for (const t of tests) {
+                        if (t.status === 'passed') spans.push('V');
+                        else if (t.status === 'failed') spans.push('X');
+                        else if (t.status === 'broken') spans.push('B');
+                        else if (t.status === 'skipped') spans.push('S');
+                    }
+                    const resultsString = spans.join(',');
+
+                    // Xray link
+                    const jiraTicket = extractJiraTicket(baseName);
+                    const xrayLink = `https://avanan.atlassian.net/browse/${jiraTicket}`;
+
+                    // Time
+                    const timestamp = window.files[filename].timestamp;
+                    const readableTimestamp = formatTimestamp(timestamp);
+
+                    // push row => [Run Name, Results, Xray Link, Time]
+                    dataRows.push([ baseName, resultsString, xrayLink, readableTimestamp ]);
+                });
+            }
+            return dataRows;
+        }
+
+        /****************************************************************
+         * 4) Updated Export CSV / PDF using gatherExportData()
+         ****************************************************************/
+        function exportTableToCSV(pageRequest) {
+            // gather all relevant data
+            const tableData = gatherExportData(pageRequest);
+            let csvContent = "data:text/csv;charset=utf-8,";
+
+            // CSV headers
+            const headers = ["Run Name", "Results Indicators", "Xray", "Time"];
+            csvContent += headers.join(",") + "\n";
+
+            tableData.forEach(row => {
+                // row is [runName, resultsString, xrayLink, timeVal]
+                csvContent += row
+                    .map(v => `"${v.replace(/"/g, '""')}"`)
+                    .join(",") + "\n";
+            });
+
+            // create download link
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "dashboard_data.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function exportTableToPDF(pageRequest) {
+            // gather all relevant data
+            const tableData = gatherExportData(pageRequest);
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ orientation: 'l', unit: 'pt', format: 'a4' });
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(14);
+            doc.text("Automation Dashboard Export", 40, 40);
+
+            // autoTable
+            const headers = [["Run Name", "Results", "Xray", "Time"]];
+            doc.autoTable({
+                startY: 60,
+                head: headers,
+                body: tableData,
+                styles: { font: "helvetica", fontSize: 10, cellPadding: 4 },
+                headStyles: { fillColor: [52, 58, 64], textColor: 255 },
+                margin: { left: 40, right: 40 },
+                theme: 'grid'
+            });
+
+            doc.save("dashboard_data.pdf");
+        }
+
+        /****************************************************************
+         * 5) Full-page overlay loader (3s minimum)
+         ****************************************************************/
         let loadStartTime;
         function showLoaderOverlay() {
             loadStartTime = Date.now();
@@ -194,9 +493,9 @@
             }
         }
 
-        /************************************************************
-         * 2) Dark/Light Mode toggles
-         ************************************************************/
+        /****************************************************************
+         * 6) Dark/Light Mode toggles
+         ****************************************************************/
         function updateChartsForTheme() {
             const theme = document.body.getAttribute('data-theme');
             const textColor = (theme === 'dark') ? '#e0e0e0' : '#212529';
@@ -253,9 +552,9 @@
             });
         });
 
-        /************************************************************
-         * 3) Date/time in navbar + Easter Egg
-         ************************************************************/
+        /****************************************************************
+         * 7) Date/time in navbar + Easter Egg
+         ****************************************************************/
         function updateDateTime() {
             const dateTimeElement = document.getElementById('currentDateTime');
             const now = new Date();
@@ -293,9 +592,9 @@
             });
         });
 
-        /************************************************************
-         * 4) Auto-Refresh logic (persisted in localStorage)
-         ************************************************************/
+        /****************************************************************
+         * 8) Auto-Refresh logic (persisted in localStorage)
+         ****************************************************************/
         let autoRefreshTimer = null;
         function setAutoRefresh(interval) {
             if (autoRefreshTimer) {
@@ -321,9 +620,9 @@
             });
         });
 
-        /************************************************************
-         * 5) Chart + table helper functions
-         ************************************************************/
+        /****************************************************************
+         * 9) Chart + table helper functions
+         ****************************************************************/
         function extractFarmName(filename) {
             const parts = filename.split('_AUT-');
             return parts.length > 0 ? parts[0] : 'Unknown';
@@ -369,7 +668,7 @@
           },
         };
 
-        // RENDER doughnut
+        // Render Doughnut
         function renderTestStatsChart(passed, failed, broken, skipped, chartId) {
             const ctx = document.getElementById(chartId).getContext('2d');
             const theme = document.body.getAttribute('data-theme');
@@ -441,7 +740,7 @@
             });
         }
 
-        // RENDER bar
+        // Render Bar
         function renderFailedTestsChart(failedObj, chartId) {
             const ctx = document.getElementById(chartId).getContext('2d');
             const theme = document.body.getAttribute('data-theme');
@@ -493,7 +792,7 @@
             });
         }
 
-        // update doughnut
+        // Update Doughnut
         function updateChart(chart, passed, failed, broken, skipped) {
             const total = passed + failed + broken + skipped;
             const passedPerc = total ? ((passed / total) * 100).toFixed(2) : 0;
@@ -527,7 +826,7 @@
             chart.update();
         }
 
-        // update bar
+        // Update Bar
         function updateFailedTestsChart(chart, failedObj) {
             const sortedFailed = Object.entries(failedObj)
                 .sort((a, b) => b[1] - a[1])
@@ -549,6 +848,7 @@
         }
 
         function getStatusIndicators(tests) {
+            // unchanged: returns multiple span indicators
             return tests.map(test => {
                 if (test.status === 'passed') {
                     return `<span class="status-indicator status-passed" title="Test Passed"></span>`;
@@ -569,9 +869,85 @@
             return date.toLocaleString();
         }
 
-        /************************************************************
-         * 6) DOMContentLoaded => Show loader => fetch => hide
-         ************************************************************/
+        /****************************************************************
+         * ADDITIONAL: Farm & Cluster Filter Logic
+         ****************************************************************/
+        function updateFarmDropdown() {
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const farmSelect = document.getElementById('farmFilter');
+            let farms = new Set();
+
+            Object.keys(window.files).forEach(filename => {
+                const fileObj = window.files[filename];
+                // Must match category
+                if (categoryFilter !== 'all' && !fileObj.categories.has(categoryFilter)) {
+                    return;
+                }
+                // Gather all distinct farm values from the tests
+                for (const t of fileObj.tests) {
+                    // We assume "farm" is stored in each test
+                    farms.add(t.farm);
+                }
+            });
+            const sortedFarms = Array.from(farms).sort();
+            farmSelect.innerHTML = '<option value="all">All</option>';
+            sortedFarms.forEach(farm => {
+                const option = document.createElement('option');
+                option.value = farm;
+                option.textContent = farm;
+                farmSelect.appendChild(option);
+            });
+        }
+
+        function updateClusterDropdown() {
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const farmFilter = document.getElementById('farmFilter').value;
+            const clusterSelect = document.getElementById('clusterFilter');
+            let clusters = new Set();
+
+            Object.keys(window.files).forEach(filename => {
+                const fileObj = window.files[filename];
+                // Must match category
+                if (categoryFilter !== 'all' && !fileObj.categories.has(categoryFilter)) {
+                    return;
+                }
+                // Check farm
+                let farmMatch = true;
+                if (farmFilter !== 'all') {
+                    // See if at least one test has this farm
+                    let foundFarm = false;
+                    for (const t of fileObj.tests) {
+                        if (t.farm === farmFilter) {
+                            foundFarm = true;
+                            break;
+                        }
+                    }
+                    if (!foundFarm) {
+                        farmMatch = false;
+                    }
+                }
+                if (!farmMatch) return;
+                // Gather clusters from all tests that remain
+                for (const t of fileObj.tests) {
+                    if (farmFilter === 'all' || t.farm === farmFilter) {
+                        // Add cluster
+                        clusters.add(t.cluster);
+                    }
+                }
+            });
+            const sortedClusters = Array.from(clusters).sort();
+            clusterSelect.innerHTML = '<option value="all">All</option>';
+            sortedClusters.forEach(cluster => {
+                const option = document.createElement('option');
+                option.value = cluster;
+                option.textContent = cluster;
+                clusterSelect.appendChild(option);
+            });
+        }
+
+        /****************************************************************
+         * 10) DOMContentLoaded => Show loader => fetch => hide, etc.
+         ****************************************************************/
         document.addEventListener('DOMContentLoaded', function() {
             showLoaderOverlay();
             window.addEventListener('load', hideLoaderOverlay);
@@ -610,7 +986,8 @@
                             const testName = test.name;
                             const testTime = new Date(test.start_time).getTime();
                             const testStatus = test.status;
-                            const farmName = extractFarmName(filename);
+                            // farm is in test.farm, cluster is in test.cluster (from fetch_and_update.py)
+                            // we still rely on "extractFarmName" for some naming, but the real farm is in test.farm
 
                             if (!window.files[filename]) {
                                 window.files[filename] = {
@@ -622,6 +999,7 @@
                             window.files[filename].tests.push(test);
                             window.files[filename].categories.add(test.category);
 
+                            // Count statuses
                             if (testStatus === 'passed') {
                                 passedCount++;
                             } else if (testStatus === 'failed') {
@@ -636,6 +1014,7 @@
                                 skippedCount++;
                             }
 
+                            // Tally last hour stats
                             if (testTime > oneHourAgo) {
                                 if (testStatus === 'passed') {
                                     lastHourPassedCount++;
@@ -653,7 +1032,7 @@
                                     testFailures[testName].push({
                                         status: testStatus,
                                         time: testTime,
-                                        farm: farmName
+                                        farm: test.farm // or farmName
                                     });
                                 }
                             }
@@ -679,7 +1058,7 @@
                                     break;
                                 }
                             } else {
-                                break; 
+                                break;
                             }
                         }
                     }
@@ -703,9 +1082,12 @@
                     const itemsPerPage = 25;
                     let currentPage = 1;
 
+                    // RENDER LIST function
                     function renderList() {
                         testList.innerHTML = '';
                         const categoryFilter = document.getElementById('categoryFilter').value;
+                        const farmFilter = document.getElementById('farmFilter').value;
+                        const clusterFilter = document.getElementById('clusterFilter').value;
                         const searchKeyword = document.getElementById('searchInput').value.toLowerCase();
 
                         let filteredPassedCount = 0;
@@ -728,14 +1110,35 @@
                         const fileNames = sortedFiles.filter(filename => {
                             const fileObj = window.files[filename];
 
-                            // Filter by Category
+                            // 1) Category
                             if (categoryFilter !== 'all') {
                                 if (!fileObj.categories.has(categoryFilter)) {
                                     return false;
                                 }
                             }
-
-                            // Filter by search keyword (any test name or filename)
+                            // 2) Farm
+                            if (farmFilter !== 'all') {
+                                let hasFarm = false;
+                                for (const t of fileObj.tests) {
+                                    if (t.farm === farmFilter) {
+                                        hasFarm = true;
+                                        break;
+                                    }
+                                }
+                                if (!hasFarm) return false;
+                            }
+                            // 3) Cluster
+                            if (clusterFilter !== 'all') {
+                                let hasCluster = false;
+                                for (const t of fileObj.tests) {
+                                    if (t.cluster === clusterFilter) {
+                                        hasCluster = true;
+                                        break;
+                                    }
+                                }
+                                if (!hasCluster) return false;
+                            }
+                            // 4) Search
                             if (searchKeyword) {
                                 let matched = false;
                                 for (const t of fileObj.tests) {
@@ -810,10 +1213,13 @@
                                   </div>
                                 </td>
                                 <td>
-                                  <a href="https://avanan.atlassian.net/browse/${extractJiraTicket(baseName)}"
-                                     target="_blank" class="jira-button"
-                                     title="Open Jira Ticket">
-                                     <i class="fab fa-jira"></i> Jira
+                                  <a
+                                    href="https://avanan.atlassian.net/browse/${extractJiraTicket(baseName)}"
+                                    target="_blank"
+                                    class="jira-button"
+                                    title="Open Jira Ticket"
+                                  >
+                                    <i class="fab fa-jira"></i> Jira
                                   </a>
                                 </td>
                                 <td class="timestamp" title="Test Timestamp">
@@ -827,7 +1233,9 @@
                             detailRow.style.display = 'none';
                             detailRow.innerHTML = `
                                 <td colspan="4" class="details-cell">
-                                    <p>Loading data...</p>
+                                    <div class="hidden-details" style="display: none;">
+                                        <p>Loading data...</p>
+                                    </div>
                                 </td>
                             `;
 
@@ -856,14 +1264,35 @@
 
                     renderList();
 
+                    // Event handlers for Category & Search
                     document.getElementById('categoryFilter').addEventListener('change', function() {
                         currentPage = 1;
+                        // Also update Farm/Cluster dropdowns
+                        updateFarmDropdown();
+                        updateClusterDropdown();
                         renderList();
                     });
                     document.getElementById('searchInput').addEventListener('input', function() {
                         currentPage = 1;
                         renderList();
                     });
+
+                    // NEW Event listeners for Farm/Cluster
+                    const farmElem = document.getElementById('farmFilter');
+                    const clusterElem = document.getElementById('clusterFilter');
+                    farmElem.addEventListener('change', () => {
+                        currentPage = 1;
+                        updateClusterDropdown();
+                        renderList();
+                    });
+                    clusterElem.addEventListener('change', () => {
+                        currentPage = 1;
+                        renderList();
+                    });
+
+                    // Initialize the new dropdowns after data is loaded
+                    updateFarmDropdown();
+                    updateClusterDropdown();
 
                     // Pagination function
                     function renderPaginationButtons(totalFiles) {
@@ -937,19 +1366,23 @@
                 });
         });
 
-        // Toggle expansions
+        // Toggle expansions (using jQuery slideDown/slideUp)
         function toggleRowExpansion(sanitizedFilename, filename) {
             const detailRow = document.getElementById('details-' + sanitizedFilename);
             if (!detailRow) return;
 
             if (detailRow.style.display === 'none' || detailRow.style.display === '') {
                 detailRow.style.display = 'table-row';
+                $(detailRow).find('.hidden-details').slideDown(300);
+
                 if (!detailRow.dataset.loaded) {
                     renderTestTable(filename, sanitizedFilename);
                     detailRow.dataset.loaded = 'true';
                 }
             } else {
-                detailRow.style.display = 'none';
+                $(detailRow).find('.hidden-details').slideUp(300, function() {
+                    detailRow.style.display = 'none';
+                });
             }
         }
 
@@ -957,7 +1390,7 @@
             const detailRow = document.getElementById('details-' + sanitizedFilename);
             if (!detailRow) return;
 
-            const cell = detailRow.querySelector('.details-cell');
+            const cell = detailRow.querySelector('.details-cell .hidden-details');
             if (!cell) return;
 
             const tests = window.files[filename].tests || [];
