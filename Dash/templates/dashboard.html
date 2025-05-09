@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Automation Tests Dashboard</title>
-   
+
     <!-- Favicon -->
     <link
         rel="icon"
@@ -145,7 +145,7 @@
             <div class="left-section">
                 <button
                     class="reset-button"
-                    onclick="location.reload();"
+                    onclick="resetFilters();"
                     title="Reset all filters and reload the page"
                 >
                     <i class="fas fa-sync-alt"></i> Reset Filters
@@ -193,10 +193,10 @@
                     title="Auto-Refresh the page"
                 >
                     <option value="0">Off</option>
-                    <option value="5000">5S</option>
-                    <option value="10000">10S</option>
-                    <option value="30000">30S</option>
                     <option value="60000">1M</option>
+                    <option value="300000">5M</option>
+                    <option value="600000">10M</option>
+                    <option value="1800000">30M</option>
                 </select>
             </div>
 
@@ -274,6 +274,10 @@
 
     <!-- Main Inline Script -->
     <script>
+        // Global variables
+        let currentPage = 1;
+        let renderList; // Declare global renderList function
+
         /****************************************************************
          * 1) Side Menu "Push" Logic
          ****************************************************************/
@@ -621,6 +625,61 @@
         });
 
         /****************************************************************
+         * NEW: Filter Persistence with localStorage
+         ****************************************************************/
+        // Save filter value to localStorage and update UI
+        function handleFilterChange(filterType, value) {
+            localStorage.setItem(`filter_${filterType}`, value);
+
+            // If changing category, update farms and clusters
+            if (filterType === 'category') {
+                updateFarmDropdown();
+                updateClusterDropdown();
+            }
+
+            // If changing farm, update clusters
+            if (filterType === 'farm') {
+                updateClusterDropdown();
+            }
+
+            // Reset to page 1 when changing filters
+            currentPage = 1;
+            localStorage.setItem('currentPage', '1');
+
+            // Render with new filters
+            renderList();
+        }
+
+        // Set current page and save to localStorage
+        function setCurrentPage(page) {
+            currentPage = page;
+            localStorage.setItem('currentPage', page.toString());
+            renderList();
+        }
+
+        // Reset all filters and localStorage
+        function resetFilters() {
+            // Clear localStorage for filters
+            localStorage.removeItem('filter_category');
+            localStorage.removeItem('filter_farm');
+            localStorage.removeItem('filter_cluster');
+            localStorage.removeItem('filter_search');
+            localStorage.removeItem('currentPage');
+
+            // Reset form elements
+            document.getElementById('categoryFilter').value = 'all';
+            document.getElementById('farmFilter').value = 'all';
+            document.getElementById('clusterFilter').value = 'all';
+            document.getElementById('searchInput').value = '';
+
+            // Reset page
+            currentPage = 1;
+
+            // Re-render
+            renderList();
+        }
+
+        /****************************************************************
          * 9) Chart + table helper functions
          ****************************************************************/
         function extractFarmName(filename) {
@@ -740,7 +799,6 @@
             });
         }
 
-        // Render Bar
         function renderFailedTestsChart(failedObj, chartId) {
             const ctx = document.getElementById(chartId).getContext('2d');
             const theme = document.body.getAttribute('data-theme');
@@ -897,6 +955,20 @@
                 option.textContent = farm;
                 farmSelect.appendChild(option);
             });
+
+            // Restore selected farm if exists in options
+            const savedFarm = localStorage.getItem('filter_farm');
+            if (savedFarm) {
+                // Check if the saved option exists in the dropdown
+                const exists = Array.from(farmSelect.options).some(option => option.value === savedFarm);
+                if (exists) {
+                    farmSelect.value = savedFarm;
+                } else {
+                    // If not, default to 'all' and update localStorage
+                    farmSelect.value = 'all';
+                    localStorage.setItem('filter_farm', 'all');
+                }
+            }
         }
 
         function updateClusterDropdown() {
@@ -943,6 +1015,20 @@
                 option.textContent = cluster;
                 clusterSelect.appendChild(option);
             });
+
+            // Restore selected cluster if exists in options
+            const savedCluster = localStorage.getItem('filter_cluster');
+            if (savedCluster) {
+                // Check if the saved option exists in the dropdown
+                const exists = Array.from(clusterSelect.options).some(option => option.value === savedCluster);
+                if (exists) {
+                    clusterSelect.value = savedCluster;
+                } else {
+                    // If not, default to 'all' and update localStorage
+                    clusterSelect.value = 'all';
+                    localStorage.setItem('filter_cluster', 'all');
+                }
+            }
         }
 
         /****************************************************************
@@ -951,6 +1037,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             showLoaderOverlay();
             window.addEventListener('load', hideLoaderOverlay);
+
+            // Restore saved page from localStorage
+            const savedPage = localStorage.getItem('currentPage');
+            if (savedPage) {
+                currentPage = parseInt(savedPage, 10);
+            }
 
             fetch('{{ url_for("static", filename="data.json") }}')
                 .then(response => {
@@ -1080,10 +1172,28 @@
                     window.failedTestsChart = renderFailedTestsChart(window.failedTests, 'failedTestsChart');
 
                     const itemsPerPage = 25;
-                    let currentPage = 1;
 
-                    // RENDER LIST function
-                    function renderList() {
+                    // Restore saved filter values from localStorage
+                    const categorySelect = document.getElementById('categoryFilter');
+                    const searchInput = document.getElementById('searchInput');
+
+                    const savedCategory = localStorage.getItem('filter_category');
+                    const savedSearch = localStorage.getItem('filter_search');
+
+                    if (savedCategory) {
+                        categorySelect.value = savedCategory;
+                    }
+
+                    if (savedSearch) {
+                        searchInput.value = savedSearch;
+                    }
+
+                    // Update farm & cluster dropdowns based on restored category
+                    updateFarmDropdown();
+                    updateClusterDropdown();
+
+                    // Define the renderList function globally
+                    renderList = function() {
                         testList.innerHTML = '';
                         const categoryFilter = document.getElementById('categoryFilter').value;
                         const farmFilter = document.getElementById('farmFilter').value;
@@ -1192,6 +1302,14 @@
                         });
 
                         // Build the table rows for the current page
+                        const totalPages = Math.ceil(fileNames.length / itemsPerPage);
+
+                        // Ensure currentPage is valid
+                        if (currentPage > totalPages && totalPages > 0) {
+                            currentPage = totalPages;
+                            localStorage.setItem('currentPage', currentPage);
+                        }
+
                         const startIndex = (currentPage - 1) * itemsPerPage;
                         const endIndex = startIndex + itemsPerPage;
                         const pageFiles = fileNames.slice(startIndex, endIndex);
@@ -1262,37 +1380,25 @@
                         renderPaginationButtons(fileNames.length);
                     }
 
+                    // Call renderList once initially
                     renderList();
 
-                    // Event handlers for Category & Search
+                    // Setup event listeners for all filter controls
                     document.getElementById('categoryFilter').addEventListener('change', function() {
-                        currentPage = 1;
-                        // Also update Farm/Cluster dropdowns
-                        updateFarmDropdown();
-                        updateClusterDropdown();
-                        renderList();
+                        handleFilterChange('category', this.value);
                     });
+
+                    document.getElementById('farmFilter').addEventListener('change', function() {
+                        handleFilterChange('farm', this.value);
+                    });
+
+                    document.getElementById('clusterFilter').addEventListener('change', function() {
+                        handleFilterChange('cluster', this.value);
+                    });
+
                     document.getElementById('searchInput').addEventListener('input', function() {
-                        currentPage = 1;
-                        renderList();
+                        handleFilterChange('search', this.value);
                     });
-
-                    // NEW Event listeners for Farm/Cluster
-                    const farmElem = document.getElementById('farmFilter');
-                    const clusterElem = document.getElementById('clusterFilter');
-                    farmElem.addEventListener('change', () => {
-                        currentPage = 1;
-                        updateClusterDropdown();
-                        renderList();
-                    });
-                    clusterElem.addEventListener('change', () => {
-                        currentPage = 1;
-                        renderList();
-                    });
-
-                    // Initialize the new dropdowns after data is loaded
-                    updateFarmDropdown();
-                    updateClusterDropdown();
 
                     // Pagination function
                     function renderPaginationButtons(totalFiles) {
@@ -1315,16 +1421,14 @@
                         const firstButton = document.createElement('li');
                         firstButton.textContent = 'First';
                         firstButton.onclick = () => {
-                            currentPage = 1;
-                            renderList();
+                            setCurrentPage(1);
                         };
                         paginationList.appendChild(firstButton);
 
                         const prevButton = document.createElement('li');
                         prevButton.textContent = 'Prev';
                         prevButton.onclick = () => {
-                            currentPage = Math.max(currentPage - 1, 1);
-                            renderList();
+                            setCurrentPage(Math.max(currentPage - 1, 1));
                         };
                         paginationList.appendChild(prevButton);
 
@@ -1335,8 +1439,7 @@
                                 pageButton.className = 'active';
                             }
                             pageButton.onclick = () => {
-                                currentPage = i;
-                                renderList();
+                                setCurrentPage(i);
                             };
                             paginationList.appendChild(pageButton);
                         }
@@ -1344,16 +1447,14 @@
                         const nextButton = document.createElement('li');
                         nextButton.textContent = 'Next';
                         nextButton.onclick = () => {
-                            currentPage = Math.min(currentPage + 1, totalPages);
-                            renderList();
+                            setCurrentPage(Math.min(currentPage + 1, totalPages));
                         };
                         paginationList.appendChild(nextButton);
 
                         const lastButton = document.createElement('li');
                         lastButton.textContent = 'Last';
                         lastButton.onclick = () => {
-                            currentPage = totalPages;
-                            renderList();
+                            setCurrentPage(totalPages);
                         };
                         paginationList.appendChild(lastButton);
 
@@ -1430,7 +1531,7 @@
                         <td>${startTime}</td>
                         <td>${duration}</td>
                         <td>
-                            <a href="/download/${filename}" target="_blank" 
+                            <a href="/download/${filename}" target="_blank"
                                title="View Allure Report">
                                View Report
                             </a>

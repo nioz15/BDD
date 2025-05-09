@@ -8,9 +8,9 @@ import html
 from flask import Flask, render_template, jsonify, send_from_directory, request, url_for, send_file
 
 app = Flask(__name__)
-app.secret_key = 'CHANGE_THIS_SECRET_KEY'  # for session security if you add login, etc.
+app.secret_key = 'CHANGE_THIS_SECRET_KEY'
 
-# Directory for downloaded reports (as in your existing code)
+# Directory for downloaded reports
 DOWNLOAD_DIR = "/home/ubuntu/BDD/Dash/static/downloaded-reports"
 
 # Virtual environment Python
@@ -25,7 +25,7 @@ DATA_JSON_PATH = os.path.join('static', 'data.json')
 
 @app.route('/')
 def index():
-    # Main dashboard page with hidden 5-click logic
+    # Main dashboard page
     return render_template('dashboard.html')
 
 @app.route('/download/<string:filename>', methods=['GET'])
@@ -107,15 +107,12 @@ def get_farm_data():
 def integration():
     return render_template('integration.html')
 
-# =========================
-# NEW: Hidden Download Route
-# =========================
 @app.route('/download_bdd_ahz', methods=['GET'])
 def download_bdd_ahz():
     # Directory to zip
-    base_path = "/home/ubuntu/BDD/Dash/ahz"  # Adjust if needed
+    base_path = "/home/ubuntu/BDD/Dash/ahz"
 
-    # Create an in-memory ZIP
+
     import io
     memory_file = io.BytesIO()
     with zipfile.ZipFile(memory_file, 'w', zipfile.ZIP_DEFLATED) as zf:
@@ -125,7 +122,7 @@ def download_bdd_ahz():
                 zf.write(file_path, os.path.relpath(file_path, base_path))
 
     memory_file.seek(0)
-    # Return as downloadable .zip
+
     return send_file(
         memory_file,
         mimetype='application/zip',
